@@ -108,7 +108,7 @@ nav.scrolled {
   justify-content: center;
   background: var(--cream);
   overflow: hidden;
-  padding: 0 68px;
+  padding: 80px 68px 40px;
 }
 .hero-noise { position: absolute; inset: 0; pointer-events: none; z-index: 1; opacity: 0.05; background-repeat: repeat; }
 .hero::before {
@@ -128,9 +128,9 @@ nav.scrolled {
 
 .hero-headline {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(58px, 8.5vw, 130px);
+  font-size: clamp(44px, 6.5vw, 100px);
   font-weight: 300;
-  line-height: .93;
+  line-height: .95;
   letter-spacing: -.03em;
   color: var(--ink);
   max-width: 820px;
@@ -348,7 +348,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   .nav-center { display: none; }
   .nav-right { display: none; }
   .nav-hamburger { display: flex; }
-  .hero { height: auto; min-height: 100svh; padding: 90px 20px 56px; }
+  .hero { height: auto; min-height: 100svh; padding: 110px 20px 56px; }
   .hero-headline { font-size: clamp(42px, 12vw, 68px); }
   .hero-badge { font-size: 9px; padding: 6px 12px; margin-bottom: 24px; }
   .hero-sub { font-size: 14px; max-width: 100%; }
@@ -360,7 +360,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   .hero-footnote { text-align: left; max-width: 100%; }
   .hero-line-v { display: none; }
   .hero-scroll { margin-top: 28px; }
-  .marquee-wrap { display: none; }
+  .coming-soon-strip { padding: 0 20px; }
+  .cs-center { display: none; }
   .split-left { padding: 56px 20px; }
   .split-right { padding: 56px 20px; }
   .split-left-num { display: none; }
@@ -396,11 +397,11 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   .cta-eyebrow { font-size: 9px; }
   .cta-btns { flex-direction: column; align-items: stretch; gap: 16px; }
   .cta-primary { justify-content: center; padding: 18px 24px; }
+  .notify-form { flex-direction: column; width: 100%; }
+  .notify-input { width: 100%; }
+  .notify-btn { width: 100%; padding: 16px; }
   footer { padding: 28px 20px; gap: 20px; }
-  .footer-links { gap: 18px; }
   .ticker-divider { display: none; }
-  .trust-bar { padding: 14px 20px; }
-  .trust-bar-label { display: none; }
 }
 
 /* ─────────────────────────────
@@ -917,6 +918,127 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 }
 .stat-label strong { color: var(--ink); font-weight: 500; }
 
+/* ─── COMING SOON STRIP ─── */
+.coming-soon-strip {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,.04);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  padding: 0 68px;
+  position: relative;
+  z-index: 3;
+}
+.cs-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  gap: 24px;
+}
+.cs-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.cs-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.28);
+}
+.cs-center {
+  flex: 1;
+  text-align: center;
+}
+.cs-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255,255,255,.45);
+  letter-spacing: .04em;
+}
+.cs-right { flex-shrink: 0; }
+.cs-cta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--red);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232,25,14,.3);
+  padding-bottom: 2px;
+  transition: border-color .2s, color .2s;
+}
+.cs-cta:hover { border-color: var(--red); color: rgba(232,25,14,.8); }
+
+/* cs-cta-static */
+.cs-cta-static {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.22);
+}
+
+/* NOTIFY FORM */
+.cta-notify { display: flex; flex-direction: column; align-items: center; gap: 16px; position: relative; z-index: 1; }
+.notify-form {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid rgba(255,255,255,.12);
+  overflow: hidden;
+}
+.notify-input {
+  background: rgba(255,255,255,.05);
+  border: none;
+  outline: none;
+  padding: 16px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,.8);
+  width: 280px;
+  letter-spacing: .02em;
+}
+.notify-input::placeholder { color: rgba(255,255,255,.2); }
+.notify-btn {
+  background: var(--red);
+  border: none;
+  padding: 16px 28px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: white;
+  cursor: pointer;
+  transition: background .2s, opacity .2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.notify-btn:hover { background: #c0110a; }
+.notify-btn.done { background: rgba(255,255,255,.1); color: rgba(255,255,255,.4); cursor: default; }
+.notify-note {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.18);
+  text-transform: uppercase;
+  position: relative; z-index: 1;
+}
+
+/* footer tagline */
+.footer-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(255,255,255,.18);
+  position: relative;
+  z-index: 1;
+}
+
 /* ─── BRAND MOTIF SECTION DIVIDER ─── */
 .motif-divider {
   display: flex;
@@ -932,6 +1054,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 /* ─── RESPONSIVE additions ─── */
 @media (max-width: 1024px) {
   .hero-motif { display: none; }
+  .coming-soon-strip { padding: 0 40px; }
   .trust-bar { padding: 16px 40px; }
   .stats-strip { grid-template-columns: 1fr 1fr; }
   .stat-item:nth-child(3) { border-right: none; grid-column: 1 / -1; border-top: 1px solid rgba(26,24,22,.07); }
@@ -961,8 +1084,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     <li><a href="#manifesto">Manifesto</a></li>
   </ul>
   <div class="nav-right">
-    <a href="#manifesto" class="nav-pill">Our Story</a>
-    <a href="#waitlist" class="nav-cta">Reserve Now</a>
+<a href="#how-it-works" class="nav-cta" style="background:transparent;color:var(--grey);border:1px solid rgba(26,24,22,.15);letter-spacing:.1em;">See How It Works</a>
   </div>
   <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -974,7 +1096,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <a href="#product" onclick="closeMobile()">Product</a>
   <a href="#how-it-works" onclick="closeMobile()">How It Works</a>
   <a href="#manifesto" onclick="closeMobile()">Manifesto</a>
-  <a href="#waitlist" onclick="closeMobile()" style="color:var(--red)">Reserve →</a>
+  <a href="#how-it-works" onclick="closeMobile()" style="color:var(--red)">How It Works →</a>
 </div>
 
 <!-- HERO -->
@@ -1019,12 +1141,14 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 
 
   <div class="hero-inner">
-    <div class="hero-badge"><div class="pulse"></div>personaise — Persona v<span class="rv">01</span> · Now Available to Reserve</div>
+    <div class="hero-badge"><div class="pulse"></div>Persona v<span class="rv">01</span> · Limited First Run</div>
 
     <h1 class="hero-headline">
-      Your AI that<br>
-      knows you <em>deeply.</em><br>
-      Acts <span class="outline">as you.</span>
+      The world has<br>
+      enough AI that<br>
+      knows <em>everything.</em><br>
+      <span class="outline">We built one</span><br>
+      that knows <em>you.</em>
     </h1>
 
     <div class="hero-sub-row">
@@ -1035,12 +1159,11 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
       </p>
       <div class="hero-right-col">
         <div class="hero-ctas">
-          <a href="#waitlist" class="btn-primary">Reserve Persona v<span class="rv">01</span> →</a>
-          <a href="#how-it-works" class="btn-ghost">See how it works ↓</a>
+          <a href="#how-it-works" class="btn-primary">See how it works →</a>
         </div>
         <div class="hero-footnote">
           <div class="hero-footnote-label">[ the distinction ]</div>
-          <div class="hero-footnote-text">"Every other wearable records you. Persona v<span class="rv">01</span> becomes you."</div>
+          <div class="hero-footnote-text">"Other wearables make you more efficient. Persona v<span class="rv">01</span> makes you more <em>you.</em>"</div>
         </div>
       </div>
     </div>
@@ -1053,41 +1176,19 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 </section>
 
 
-<!-- TRUST BAR -->
-<div class="trust-bar">
-  <div class="trust-bar-label">Early adopters</div>
-  <div class="trust-bar-track">
-    <span class="trust-item">Founders & operators</span>
-    <span class="trust-item">Sales professionals</span>
-    <span class="trust-item">Product managers</span>
-    <span class="trust-item">Consultants</span>
-    <span class="trust-item">Executives</span>
-    <span class="trust-item">Investors</span>
-    <span class="trust-item">Builders</span>
-    <!-- duplicate for seamless loop -->
-    <span class="trust-item">Founders & operators</span>
-    <span class="trust-item">Sales professionals</span>
-    <span class="trust-item">Product managers</span>
-    <span class="trust-item">Consultants</span>
-    <span class="trust-item">Executives</span>
-    <span class="trust-item">Investors</span>
-    <span class="trust-item">Builders</span>
-  </div>
-</div>
-
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span class="marquee-item">Clip it on <span class="x">×</span> Speak naturally <span class="x">×</span> It takes care of the rest</span>
-    <span class="marquee-item">Not a recorder <span class="x">×</span> A second brain that sounds like your first</span>
-    <span class="marquee-item">Your tone <span class="x">×</span> Your context <span class="x">×</span> Your relationships</span>
-    <span class="marquee-item">The AI that knows you better than your inbox does</span>
-    <span class="marquee-item">Drafts <span class="x">×</span> Schedules <span class="x">×</span> Follows up — always as you</span>
-    <span class="marquee-item">Clip it on <span class="x">×</span> Speak naturally <span class="x">×</span> It takes care of the rest</span>
-    <span class="marquee-item">Not a recorder <span class="x">×</span> A second brain that sounds like your first</span>
-    <span class="marquee-item">Your tone <span class="x">×</span> Your context <span class="x">×</span> Your relationships</span>
-    <span class="marquee-item">The AI that knows you better than your inbox does</span>
-    <span class="marquee-item">Drafts <span class="x">×</span> Schedules <span class="x">×</span> Follows up — always as you</span>
+<!-- COMING SOON STRIP -->
+<div class="coming-soon-strip">
+  <div class="cs-inner">
+    <div class="cs-left">
+      <div class="pulse"></div>
+      <span class="cs-label">Launching Soon</span>
+    </div>
+    <div class="cs-center">
+      <span class="cs-headline">Persona v<span class="rv">01</span> &mdash; Limited First Run</span>
+    </div>
+    <div class="cs-right">
+      <span class="cs-cta-static">Waitlist Opening Soon</span>
+    </div>
   </div>
 </div>
 
@@ -1116,8 +1217,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     <div class="stat-label"><strong>Twice as productive</strong> in the first week of daily use</div>
   </div>
   <div class="stat-item reveal r1">
-    <div class="stat-num">142<em>+</em></div>
-    <div class="stat-label"><strong>Interactions learned</strong> per user in the first 30 days on average</div>
+    <div class="stat-num">Day <em>1</em></div>
+    <div class="stat-label"><strong>Starts learning you</strong> from the very first conversation it hears</div>
   </div>
   <div class="stat-item reveal r2">
     <div class="stat-num"><em>∞</em></div>
@@ -1449,15 +1550,14 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="phil-inner">
     <div class="phil-label reveal">The Manifesto</div>
     <h2 class="phil-q reveal r1">
-      <span class="dim">Other wearables</span><br>
-      hear your words.<br>
-      Persona v<span class="rv">01</span> <em>understands</em><br>
-      <span class="dim">who is</span><br>
-      speaking them.
+      <span class="dim">The world has enough</span><br>
+      AI that knows <em>everything.</em><br>
+      <span class="dim">We built one that</span><br>
+      knows <em>you.</em>
     </h2>
     <div class="phil-row reveal r2">
       <div class="phil-line"></div>
-      <p class="phil-cite">We built personaise because transcription was never the hard part. Sounding like you — that was.</p>
+      <p class="phil-cite">Anyone can build an AI that talks. We built one that sounds like you wrote every word yourself — because in a way, you did.</p>
     </div>
   </div>
 </section>
@@ -1466,12 +1566,15 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 <section class="cta" id="waitlist">
   <div class="cta-noise" id="ctaNoise"></div>
   <div class="cta-glow"></div>
-  <div class="cta-eyebrow">Limited First Run — Persona v<span class="rv">01</span></div>
+  <div class="cta-eyebrow">Persona v<span class="rv">01</span> — Coming Soon</div>
   <h2 class="cta-h reveal">Wear your<br><em>sharpest</em> <span class="stroke">self.</span></h2>
-  <p class="cta-sub reveal r1">Persona v<span class="rv">01</span> ships to a limited first cohort. Reserve yours before the waitlist closes.</p>
-  <div class="cta-btns reveal r2">
-    <a href="#" class="cta-primary">Reserve Persona v<span class="rv">01</span> →</a>
-    <a href="#" class="cta-secondary">Read the Manifesto</a>
+  <p class="cta-sub reveal r1">We're building something that knows you better than any AI ever has. Be the first to know when Persona v<span class="rv">01</span> is ready.</p>
+  <div class="cta-notify reveal r2">
+    <div class="notify-form">
+      <input type="email" class="notify-input" placeholder="your@email.com" />
+      <button class="notify-btn" onclick="handleNotify(this)">Notify me</button>
+    </div>
+    <p class="notify-note">No spam. Just one email when we launch.</p>
   </div>
 </section>
 
@@ -1479,8 +1582,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 <footer>
   <div class="footer-noise" id="footerNoise"></div>
   <div class="footer-logo">person<em style="font-style:normal;color:var(--red)">ai</em>se</div>
-  <ul class="footer-links"><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Contact</a></li></ul>
-  <div class="footer-copy">© 2025 personaise, Inc.</div>
+  <div class="footer-tagline">The AI that becomes you.</div>
+  <div class="footer-copy">© 2026 personaise, Inc.</div>
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -1585,6 +1688,21 @@ const revealObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
 
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ── NOTIFY FORM
+function handleNotify(btn) {
+  const input = btn.previousElementSibling;
+  if (!input.value || !input.value.includes('@')) {
+    input.style.borderColor = 'var(--red)';
+    input.focus();
+    return;
+  }
+  btn.textContent = '✓ On the list';
+  btn.classList.add('done');
+  btn.disabled = true;
+  input.disabled = true;
+  input.style.opacity = '.4';
+}
 
 // ── MOBILE MENU
 const hamburger = document.getElementById('navHamburger');
