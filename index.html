@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personai — The AI That Is You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --red: #E8190E;
+  --black: #0C0B0A;
+  --cream: #F2EFE9;
+  --cream-dark: #E8E4DC;
+  --white: #FDFCFB;
+  --grey: #8A8680;
+  --mid: #C4C0B8;
+  --ink: #1A1816;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; cursor: none; }
+
+/* NOISE OVERLAY */
+#noise-overlay { position: fixed; inset: 0; z-index: 200; pointer-events: none; opacity: 0.028; mix-blend-mode: multiply; background-repeat: repeat; }
+
+/* CURSOR */
+.cursor { position: fixed; width: 10px; height: 10px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%,-50%); transition: width .2s, height .2s; left: -100px; top: -100px; }
+.cursor-ring { position: fixed; width: 36px; height: 36px; border: 1.5px solid rgba(26,24,22,.35); border-radius: 50%; pointer-events: none; z-index: 99998; transform: translate(-50%,-50%); left: -100px; top: -100px; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 28px 68px;
+  transition: background .4s, padding .3s, box-shadow .3s;
+}
+nav.scrolled {
+  background: rgba(242,239,233,.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 16px 68px;
+  border-bottom: 1px solid rgba(26,24,22,.06);
+  box-shadow: 0 4px 32px rgba(26,24,22,.04);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 400; letter-spacing: .01em;
+  color: var(--ink); text-decoration: none;
+  display: flex; align-items: center; gap: 0;
+}
+.nav-logo em { font-style: normal; color: var(--red); }
+.nav-center {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 40px; list-style: none;
+}
+.nav-center a {
+  text-decoration: none; font-size: 12px; color: var(--ink);
+  opacity: .38; letter-spacing: .06em; transition: opacity .2s;
+  font-weight: 400; text-transform: uppercase;
+}
+.nav-center a:hover, .nav-center a.active { opacity: 1; }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-pill {
+  font-size: 11px; font-weight: 400; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--grey);
+  text-decoration: none; transition: color .2s;
+  padding: 10px 0;
+}
+.nav-pill:hover { color: var(--ink); }
+.nav-cta {
+  font-size: 11px; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--white);
+  background: var(--ink); padding: 11px 26px;
+  text-decoration: none; transition: background .25s;
+  border: 1px solid transparent;
+}
+.nav-cta:hover { background: var(--red); }
+/* mobile hamburger */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 4px; background: none; border: none;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--ink); transition: all .3s;
+}
+.nav-mobile-menu {
+  display: none; position: fixed; inset: 0; background: var(--cream);
+  z-index: 490; flex-direction: column; justify-content: center;
+  align-items: center; gap: 36px; padding: 80px 24px;
+}
+.nav-mobile-menu.open { display: flex; }
+.nav-mobile-menu a {
+  font-family: 'Cormorant Garamond', serif; font-size: 36px;
+  font-weight: 300; color: var(--ink); text-decoration: none;
+  opacity: .7; transition: opacity .2s;
+}
+.nav-mobile-menu a:hover { opacity: 1; }
+
+/* HERO */
+.hero {
+  height: 100vh;
+  max-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--cream);
+  overflow: hidden;
+  padding: 0 68px;
+}
+.hero-noise { position: absolute; inset: 0; pointer-events: none; z-index: 1; opacity: 0.05; background-repeat: repeat; }
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(26,24,22,.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none; z-index: 0;
+}
+.hero-line-v { position: absolute; top: 0; right: 168px; width: 1px; height: 100%; background: linear-gradient(to bottom, transparent 8%, rgba(232,25,14,.18) 38%, rgba(232,25,14,.09) 72%, transparent 94%); z-index: 2; }
+
+.hero-inner { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; position: relative; z-index: 3; width: 100%; gap: 0; }
+
+.hero-badge { display: inline-flex; align-items: center; gap: 10px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--grey); border: 1px solid rgba(26,24,22,.1); background: rgba(255,255,255,.45); backdrop-filter: blur(8px); padding: 8px 16px; margin-bottom: 36px; opacity: 0; animation: fadeUp .7s ease .2s forwards; }
+.pulse { width: 6px; height: 6px; background: var(--red); border-radius: 50%; animation: pulseAnim 2s ease infinite; flex-shrink: 0; }
+@keyframes pulseAnim { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.6)} }
+
+.hero-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(58px, 8.5vw, 130px);
+  font-weight: 300;
+  line-height: .93;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  max-width: 820px;
+  opacity: 0;
+  animation: fadeUp .9s ease .45s forwards;
+}
+.hero-headline em { font-style: italic; color: var(--red); font-weight: 300; }
+.hero-headline .outline { -webkit-text-stroke: 1.5px var(--ink); color: transparent; }
+
+.hero-sub-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 60px;
+  width: 100%;
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(26,24,22,.1);
+  opacity: 0;
+  animation: fadeUp .8s ease .7s forwards;
+}
+.hero-sub { font-size: 14px; line-height: 1.8; color: var(--grey); font-weight: 300; max-width: 340px; }
+.hero-sub strong { color: var(--ink); font-weight: 400; }
+
+.hero-right-col { display: flex; flex-direction: column; align-items: flex-end; gap: 24px; flex-shrink: 0; }
+.hero-ctas { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+
+.btn-primary { display: inline-flex; align-items: center; gap: 18px; background: var(--ink); color: var(--white); text-decoration: none; padding: 16px 40px; font-size: 12px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; transition: background .25s, gap .25s; white-space: nowrap; }
+.btn-primary:hover { background: var(--red); gap: 26px; }
+.btn-ghost { font-size: 12px; color: var(--grey); text-decoration: none; letter-spacing: .07em; transition: color .2s; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(26,24,22,.12); padding-bottom: 2px; white-space: nowrap; }
+.btn-ghost:hover { color: var(--ink); border-color: rgba(26,24,22,.4); }
+
+.hero-footnote { text-align: right; max-width: 220px; border-top: 1px solid rgba(26,24,22,.08); padding-top: 16px; }
+.hero-footnote-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .18em; color: var(--mid); margin-bottom: 6px; }
+.hero-footnote-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: var(--grey); line-height: 1.6; }
+
+.hero-scroll { margin-top: 40px; display: flex; align-items: center; gap: 20px; position: relative; z-index: 3; opacity: 0; animation: fadeUp .6s ease 1.2s forwards; }
+.hero-scroll-line { width: 40px; height: 1px; background: var(--mid); position: relative; overflow: hidden; }
+.hero-scroll-line::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--red); animation: lineSlide 2.2s ease-in-out infinite 1.5s; }
+@keyframes lineSlide { 0%{left:-100%} 50%{left:0} 100%{left:100%} }
+.hero-scroll-text { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--mid); }
+
+/* MARQUEE */
+.marquee-wrap { background: var(--ink); overflow: hidden; white-space: nowrap; position: relative; }
+.marquee-wrap::before, .marquee-wrap::after { content: ''; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2; }
+.marquee-wrap::before { left: 0; background: linear-gradient(to right, var(--ink), transparent); }
+.marquee-wrap::after { right: 0; background: linear-gradient(to left, var(--ink), transparent); }
+.marquee-track { display: inline-flex; animation: marqueeAnim 24s linear infinite; padding: 20px 0; }
+.marquee-item { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; font-weight: 300; color: rgba(255,255,255,.6); padding: 0 52px; letter-spacing: .04em; flex-shrink: 0; }
+.marquee-item .x { color: var(--red); font-style: normal; margin: 0 20px; opacity: 1; }
+@keyframes marqueeAnim { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* SPLIT INTRO */
+.split-intro { display: grid; grid-template-columns: 1fr 1fr; min-height: 80vh; overflow: hidden; }
+.split-left { background: var(--ink); padding: 100px 72px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+.split-left-noise { position: absolute; inset: 0; pointer-events: none; opacity: .04; background-repeat: repeat; }
+.split-left-num { font-family: 'Cormorant Garamond', serif; font-size: 160px; font-weight: 300; color: rgba(255,255,255,.04); line-height: 1; position: absolute; bottom: -20px; right: -10px; font-style: italic; pointer-events: none; }
+.split-label { font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--red); display: flex; align-items: center; gap: 12px; }
+.split-label::before { content:''; width: 24px; height: 1px; background: var(--red); }
+.split-headline { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 4vw, 64px); font-weight: 300; line-height: 1.06; color: rgba(255,255,255,.9); letter-spacing: -.015em; }
+.split-headline em { font-style: italic; color: var(--red); }
+.split-footnote { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; color: rgba(255,255,255,.25); line-height: 1.6; border-top: 1px solid rgba(255,255,255,.06); padding-top: 28px; max-width: 340px; }
+
+.split-right { padding: 100px 72px; display: flex; flex-direction: column; justify-content: center; gap: 36px; position: relative; background: var(--white); }
+.split-right-noise { position: absolute; inset: 0; pointer-events: none; opacity: .025; background-repeat: repeat; }
+.body-text { font-size: 16px; line-height: 1.9; color: var(--grey); font-weight: 300; position: relative; z-index: 1; }
+.body-text strong { color: var(--ink); font-weight: 500; }
+.pull-quote { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; font-style: italic; color: var(--ink); line-height: 1.4; border-left: 2px solid var(--red); padding-left: 28px; opacity: .85; position: relative; z-index: 1; }
+
+/* DEMO */
+.demo-section { background: var(--cream); padding: 140px 68px; position: relative; overflow: hidden; }
+.demo-section-noise { position: absolute; inset: 0; pointer-events: none; opacity: .04; background-repeat: repeat; }
+.demo-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 72px; position: relative; z-index: 2; }
+.demo-h-label { font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--red); display: flex; align-items: center; gap: 12px; }
+.demo-h-label::before { content:''; width:24px; height:1px; background:var(--red); }
+.demo-h-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 4.5vw, 64px); font-weight: 300; line-height: 1.05; color: var(--ink); letter-spacing: -.015em; }
+.demo-h-title em { font-style: italic; color: var(--red); }
+.demo-h-right { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--mid); letter-spacing: .1em; text-align: right; line-height: 1.9; }
+
+.terminal { background: #111009; position: relative; z-index: 2; box-shadow: 0 60px 120px rgba(0,0,0,.22), 0 0 0 1px rgba(255,255,255,.03); max-width: 900px; margin: 0 auto; border-radius: 3px; overflow: hidden; }
+.terminal-noise { position: absolute; inset: 0; pointer-events: none; opacity: .05; background-repeat: repeat; z-index: 0; }
+.terminal-bar { background: #1A1915; padding: 14px 20px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,.04); position: relative; z-index: 1; }
+.t-dot { width: 10px; height: 10px; border-radius: 50%; }
+.t-dot-r { background: #FF5F57; } .t-dot-y { background: #FFBD2E; } .t-dot-g { background: #28C840; }
+.t-title { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(255,255,255,.18); letter-spacing: .1em; margin-left: 12px; }
+.t-status { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--red); letter-spacing: .12em; display: flex; align-items: center; gap: 7px; }
+.t-status::before { content:''; width:5px; height:5px; background:var(--red); border-radius:50%; animation:pulseAnim 1.5s ease infinite; }
+.terminal-body { padding: 36px 44px 44px; position: relative; z-index: 1; }
+.t-line { font-family: 'DM Mono', monospace; font-size: 12px; color: rgba(255,255,255,.2); letter-spacing: .08em; margin-bottom: 28px; }
+.t-line .prompt { color: var(--red); margin-right: 12px; }
+.t-line .cmd { color: rgba(255,255,255,.5); }
+.t-line .arg { color: rgba(255,165,80,.65); }
+.t-divider { height: 1px; background: rgba(255,255,255,.05); margin: 28px 0; }
+.t-thinking { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.t-thinking-text { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(255,255,255,.2); letter-spacing: .1em; }
+.t-dots span { display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--red); opacity: .4; animation: dotBounce 1.4s ease infinite; margin-right: 4px; }
+.t-dots span:nth-child(2){animation-delay:.2s} .t-dots span:nth-child(3){animation-delay:.4s}
+@keyframes dotBounce { 0%,80%,100%{opacity:.3;transform:translateY(0)} 40%{opacity:1;transform:translateY(-4px)} }
+.t-email-card { background: rgba(255,255,255,.032); border: 1px solid rgba(255,255,255,.07); border-radius: 2px; padding: 24px 28px; margin-bottom: 24px; }
+.t-email-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(255,255,255,.22); line-height: 2; letter-spacing: .06em; margin-bottom: 16px; }
+.t-email-meta span { color: rgba(255,255,255,.5); }
+.t-email-divider { height: 1px; background: rgba(255,255,255,.05); margin: 16px 0; }
+.t-email-body { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; color: rgba(255,255,255,.55); line-height: 1.75; }
+.t-caret { display: inline-block; width: 2px; height: 18px; background: var(--red); vertical-align: middle; margin-left: 2px; animation: caretBlink 1s step-end infinite; }
+@keyframes caretBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+.t-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
+.t-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .14em; color: rgba(255,255,255,.2); }
+.badge-pill { background: rgba(232,25,14,.12); border: 1px solid rgba(232,25,14,.2); color: var(--red); padding: 3px 10px; font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+.t-action { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,.15); letter-spacing: .12em; }
+.t-action .hi { color: rgba(255,255,255,.4); }
+.demo-caption { text-align: center; margin-top: 40px; font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: var(--grey); position: relative; z-index: 2; }
+
+/* TICKER */
+.ticker-divider { background: var(--cream-dark); overflow: hidden; padding: 22px 0; border-top: 1px solid rgba(10,9,8,.06); border-bottom: 1px solid rgba(10,9,8,.06); position: relative; }
+.ticker-divider-noise { position: absolute; inset: 0; pointer-events: none; opacity: .04; background-repeat: repeat; }
+.ticker-track { display: inline-flex; animation: marqueeAnim 16s linear infinite; white-space: nowrap; position: relative; z-index: 1; }
+.ticker-item { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(10,9,8,.3); padding: 0 40px; flex-shrink: 0; }
+.ticker-item .dot { color: var(--red); margin-right: 40px; }
+
+/* FEATURES */
+.features { background: var(--ink); padding: 120px 68px; position: relative; overflow: hidden; }
+.features-noise { position: absolute; inset: 0; pointer-events: none; opacity: .045; background-repeat: repeat; }
+.features-glow { position: absolute; top: -200px; left: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(232,25,14,.07) 0%, transparent 60%); pointer-events: none; }
+.features-top { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: end; margin-bottom: 72px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,.05); position: relative; z-index: 1; }
+.features-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 5.5vw, 80px); font-weight: 300; line-height: .95; color: rgba(255,255,255,.9); letter-spacing: -.02em; }
+.features-h em { font-style: italic; color: rgba(255,255,255,.2); }
+.features-desc { font-size: 15px; line-height: 1.85; color: rgba(255,255,255,.42); font-weight: 300; margin-bottom: 24px; }
+.feat-ghost-num { font-family: 'Cormorant Garamond', serif; font-size: 80px; font-style: italic; font-weight: 300; color: rgba(255,255,255,.04); line-height: 1; }
+.feat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: rgba(255,255,255,.06); position: relative; z-index: 1; }
+.feat-card { background: #141210; padding: 44px 36px; position: relative; overflow: hidden; transition: background .3s; cursor: default; display: flex; flex-direction: column; gap: 10px; }
+.feat-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform .4s cubic-bezier(.16,1,.3,1); }
+.feat-card:hover { background: #1c1814; }
+.feat-card:hover::after { transform: scaleX(1); }
+.feat-card:hover .feat-n { color: var(--red); }
+.feat-n { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,.2); letter-spacing: .15em; transition: color .3s; }
+.feat-icon { opacity: .55; margin-bottom: 4px; }
+.feat-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: rgba(255,255,255,.88); letter-spacing: -.01em; line-height: 1.15; }
+.feat-desc { font-size: 14px; line-height: 1.85; color: rgba(255,255,255,.48); font-weight: 300; margin-top: 2px; }
+
+/* PHILOSOPHY */
+.philosophy { background: var(--cream); padding: 160px 68px; position: relative; overflow: hidden; }
+.philosophy-noise { position: absolute; inset: 0; pointer-events: none; opacity: .045; background-repeat: repeat; }
+.phil-bg-word { position: absolute; bottom: -80px; right: -60px; font-family: 'Cormorant Garamond', serif; font-size: 34vw; font-weight: 300; font-style: italic; color: rgba(10,9,8,.03); line-height: 1; pointer-events: none; user-select: none; }
+.phil-inner { max-width: 840px; position: relative; z-index: 1; }
+.phil-label { font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--red); display: flex; align-items: center; gap: 12px; margin-bottom: 52px; }
+.phil-label::before { content:''; width:24px; height:1px; background:var(--red); }
+.phil-q { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 5.2vw, 82px); font-weight: 300; line-height: 1.06; letter-spacing: -.02em; color: var(--ink); margin-bottom: 56px; }
+.phil-q em { font-style: italic; color: var(--red); }
+.phil-q .dim { opacity: .18; }
+.phil-row { display: flex; align-items: center; gap: 28px; padding-top: 40px; border-top: 1px solid rgba(10,9,8,.08); }
+.phil-line { width: 36px; height: 1px; background: var(--red); flex-shrink: 0; }
+.phil-cite { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: var(--grey); line-height: 1.55; }
+
+/* CTA */
+.cta { background: var(--ink); padding: 160px 68px; text-align: center; position: relative; overflow: hidden; }
+.cta-noise { position: absolute; inset: 0; pointer-events: none; opacity: .055; background-repeat: repeat; }
+.cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(232,25,14,.09) 0%, transparent 60%); pointer-events: none; }
+.cta-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,.18); margin-bottom: 48px; position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 20px; }
+.cta-eyebrow::before,.cta-eyebrow::after { content: ''; width: 44px; height: 1px; background: rgba(255,255,255,.08); }
+.cta-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 9vw, 140px); font-weight: 300; line-height: .93; color: rgba(255,255,255,.9); letter-spacing: -.025em; margin-bottom: 32px; position: relative; z-index: 1; }
+.cta-h em { font-style: italic; color: var(--red); }
+.cta-h .stroke { -webkit-text-stroke: 1px rgba(255,255,255,.25); color: transparent; }
+.cta-sub { font-size: 15px; color: rgba(255,255,255,.28); font-weight: 300; max-width: 340px; margin: 0 auto 60px; line-height: 1.75; position: relative; z-index: 1; }
+.cta-btns { display: flex; align-items: center; justify-content: center; gap: 24px; position: relative; z-index: 1; flex-wrap: wrap; }
+.cta-primary { display: inline-flex; align-items: center; gap: 18px; background: var(--red); color: var(--white); text-decoration: none; padding: 20px 52px; font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; transition: transform .3s, box-shadow .3s, gap .25s; }
+.cta-primary:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(232,25,14,.3); gap: 26px; }
+.cta-secondary { font-size: 12px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.28); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.1); padding-bottom: 3px; transition: color .2s, border-color .2s; }
+.cta-secondary:hover { color: rgba(255,255,255,.65); border-color: rgba(255,255,255,.4); }
+
+/* FOOTER */
+footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255,255,255,.04); display: flex; justify-content: space-between; align-items: center; position: relative; flex-wrap: wrap; gap: 20px; }
+.footer-noise { position: absolute; inset: 0; pointer-events: none; opacity: .04; background-repeat: repeat; }
+.footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; letter-spacing: .01em; color: rgba(255,255,255,.5); position: relative; z-index: 1; }
+.footer-links { display: flex; gap: 36px; list-style: none; position: relative; z-index: 1; flex-wrap: wrap; }
+.footer-links a { font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: rgba(255,255,255,.2); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--red); }
+.footer-copy { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(255,255,255,.18); letter-spacing: .08em; position: relative; z-index: 1; }
+
+/* ─────────────────────────────
+   RESPONSIVE — TABLET ≤1024px
+───────────────────────────── */
+@media (max-width: 1024px) {
+  nav { padding: 24px 40px; }
+  nav.scrolled { padding: 16px 40px; }
+  .nav-center { display: none; }
+  .nav-pill { display: none; }
+  .hero { padding: 0 40px; }
+  .hero-sub-row { flex-direction: column; gap: 32px; }
+  .hero-right-col { align-items: flex-start; }
+  .hero-footnote { text-align: left; }
+  .split-intro { grid-template-columns: 1fr; }
+  .split-left, .split-right { padding: 72px 40px; }
+  .demo-section { padding: 100px 40px; }
+  .steps-row { grid-template-columns: 1fr; gap: 32px; padding: 40px 0; }
+  .step-arrow { display: none; }
+  .step-item { padding: 0; }
+  .pc-body { grid-template-columns: 1fr; }
+  .pc-traits { border-right: none; border-bottom: 1px solid rgba(255,255,255,.05); }
+  .features { padding: 100px 40px; }
+  .features-top { grid-template-columns: 1fr; gap: 32px; margin-bottom: 56px; }
+  .feat-grid { grid-template-columns: 1fr 1fr; }
+  .philosophy { padding: 120px 40px; }
+  .cta { padding: 120px 40px; }
+  footer { padding: 40px; flex-direction: column; align-items: flex-start; gap: 24px; }
+}
+
+/* ─────────────────────────────
+   RESPONSIVE — MOBILE ≤768px
+───────────────────────────── */
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+  nav { padding: 18px 20px; }
+  nav.scrolled { padding: 14px 20px; }
+  .nav-center { display: none; }
+  .nav-right { display: none; }
+  .nav-hamburger { display: flex; }
+  .hero { height: auto; min-height: 100svh; padding: 90px 20px 56px; }
+  .hero-headline { font-size: clamp(42px, 12vw, 68px); }
+  .hero-badge { font-size: 9px; padding: 6px 12px; margin-bottom: 24px; }
+  .hero-sub { font-size: 14px; max-width: 100%; }
+  .hero-sub-row { flex-direction: column; gap: 24px; margin-top: 24px; padding-top: 20px; }
+  .hero-right-col { width: 100%; align-items: stretch; }
+  .hero-ctas { align-items: stretch; }
+  .btn-primary { justify-content: center; padding: 15px 20px; }
+  .btn-ghost { justify-content: center; }
+  .hero-footnote { text-align: left; max-width: 100%; }
+  .hero-line-v { display: none; }
+  .hero-scroll { margin-top: 28px; }
+  .marquee-wrap { display: none; }
+  .split-left { padding: 56px 20px; }
+  .split-right { padding: 56px 20px; }
+  .split-left-num { display: none; }
+  .body-text { font-size: 15px; }
+  .pull-quote { font-size: 20px; padding-left: 20px; }
+  .demo-section { padding: 72px 20px; }
+  .demo-header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 40px; }
+  .demo-h-right { text-align: left; font-size: 10px; }
+  .steps-row { gap: 24px; padding: 28px 0; margin-bottom: 32px; }
+  .step-title { font-size: 19px; }
+  .step-desc { font-size: 13px; max-width: 100%; }
+  .pc-header { padding: 14px 16px; }
+  .pc-name { font-size: 15px; }
+  .pc-header-right { display: none; }
+  .pc-traits { padding: 16px; }
+  .uc-card-tabs { grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 10px; }
+  .uc-panel { padding: 14px 14px 12px; gap: 10px; }
+  .uc-voice-text { font-size: 14px; }
+  .uc-body { font-size: 13px; }
+  .pc-security { gap: 14px; padding: 12px 14px; flex-wrap: wrap; }
+  .sec-item { font-size: 9px; }
+  .features { padding: 72px 20px; }
+  .features-top { grid-template-columns: 1fr; gap: 20px; margin-bottom: 40px; padding-bottom: 32px; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .feat-card { padding: 32px 24px; }
+  .feat-ghost-num { display: none; }
+  .feat-desc { color: rgba(255,255,255,.55); }
+  .philosophy { padding: 80px 20px; }
+  .phil-bg-word { font-size: 55vw; }
+  .phil-label { margin-bottom: 36px; }
+  .phil-q { margin-bottom: 40px; }
+  .cta { padding: 96px 20px; }
+  .cta-eyebrow { font-size: 9px; }
+  .cta-btns { flex-direction: column; align-items: stretch; gap: 16px; }
+  .cta-primary { justify-content: center; padding: 18px 24px; }
+  footer { padding: 28px 20px; gap: 20px; }
+  .footer-links { gap: 18px; }
+  .ticker-divider { display: none; }
+  .trust-bar { padding: 14px 20px; }
+  .trust-bar-label { display: none; }
+}
+
+/* ─────────────────────────────
+   SMALL MOBILE ≤380px
+───────────────────────────── */
+@media (max-width: 380px) {
+  .hero-headline { font-size: clamp(36px, 13vw, 54px); }
+  .uc-card-tabs { grid-template-columns: repeat(2, 1fr); }
+  .ucc-desc { display: none; }
+}
+
+/* 3-STEP ROW */
+.steps-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: start;
+  gap: 0;
+  margin-bottom: 56px;
+  padding: 48px 0;
+  border-top: 1px solid rgba(26,24,22,.08);
+  border-bottom: 1px solid rgba(26,24,22,.08);
+}
+.step-item { display: flex; flex-direction: column; gap: 14px; padding: 0 40px; }
+.step-item:first-child { padding-left: 0; }
+.step-item:last-child { padding-right: 0; }
+.step-num { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .2em; color: var(--red); }
+.step-icon { opacity: .8; }
+.step-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--ink); letter-spacing: -.01em; }
+.step-desc { font-size: 13px; line-height: 1.75; color: var(--grey); font-weight: 300; max-width: 280px; }
+.step-arrow { font-size: 20px; color: var(--mid); align-self: center; padding: 0 8px; }
+
+/* pc-name-sub */
+.pc-name-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--red); letter-spacing: .1em; font-weight: 400; }
+
+/* ── PERSONA CARD ── */
+.persona-card {
+  background: #0F0E0C;
+  border: 1px solid rgba(255,255,255,.05);
+  box-shadow: 0 60px 120px rgba(0,0,0,.28), 0 0 0 1px rgba(255,255,255,.03);
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+.pc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  background: #1A1915;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.pc-header-left { display: flex; align-items: center; gap: 16px; }
+.pc-avatar {
+  width: 40px; height: 40px;
+  background: var(--red);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  flex-shrink: 0;
+}
+.pc-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: rgba(255,255,255,.85); letter-spacing: .02em; }
+.pc-role { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,.3); letter-spacing: .1em; margin-top: 3px; }
+.pc-header-right { text-align: right; }
+.pc-status { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--red); letter-spacing: .12em; display: flex; align-items: center; gap: 7px; justify-content: flex-end; }
+.pc-dot { width: 5px; height: 5px; background: var(--red); border-radius: 50%; animation: pulseAnim 1.5s ease infinite; }
+.pc-dot-sm { width: 4px; height: 4px; background: var(--red); border-radius: 50%; display: inline-block; animation: pulseAnim 2s ease infinite; margin-right: 6px; }
+.pc-device { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,.2); letter-spacing: .1em; margin-top: 4px; }
+
+.pc-body {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  min-height: 520px;
+}
+
+/* LEFT — PERSONA TRAITS */
+.pc-traits {
+  padding: 32px;
+  border-right: 1px solid rgba(255,255,255,.05);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pc-section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.2);
+  margin-bottom: 4px;
+}
+.trait-row { display: flex; flex-direction: column; gap: 5px; }
+.trait-label { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .04em; }
+.trait-bar-wrap { height: 2px; background: rgba(255,255,255,.06); border-radius: 2px; overflow: hidden; }
+.trait-bar { height: 100%; background: linear-gradient(to right, var(--red), rgba(232,25,14,.4)); border-radius: 2px; transition: width 1.5s cubic-bezier(.16,1,.3,1); }
+.trait-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--red); letter-spacing: .12em; }
+.pc-divider { height: 1px; background: rgba(255,255,255,.05); margin: 4px 0; }
+.rel-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.rel-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.35);
+  border: 1px solid rgba(255,255,255,.07);
+  padding: 5px 10px;
+}
+.pc-evolve {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,.2);
+  letter-spacing: .08em;
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+}
+
+/* RIGHT — USE CASE TABS */
+.pc-usecases { display: flex; flex-direction: column; }
+.uc-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.uc-tab {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.25);
+  background: transparent;
+  border: none;
+  padding: 16px 24px;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.uc-tab:hover { color: rgba(255,255,255,.6); }
+.uc-tab.active { color: var(--red); border-bottom-color: var(--red); }
+
+.uc-panel { display: none; padding: 20px 24px 16px; flex-direction: column; gap: 12px; flex: 1; }
+.uc-panel.active { display: flex; }
+
+.uc-voice-input {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  padding: 12px 14px;
+  border-radius: 2px;
+}
+.prompt-dot { width: 7px; height: 7px; background: var(--red); border-radius: 50%; flex-shrink: 0; margin-top: 5px; animation: pulseAnim 1.5s ease infinite; }
+.uc-voice-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: rgba(255,255,255,.6);
+  line-height: 1.45;
+}
+.uc-thinking {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,.25);
+  letter-spacing: .1em;
+  padding: 0 2px;
+}
+.uc-output-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 16px 20px;
+  flex: 1;
+}
+.uc-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,.25);
+  letter-spacing: .05em;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+.uc-meta span { color: rgba(255,255,255,.55); }
+.uc-divider { height: 1px; background: rgba(255,255,255,.06); margin-bottom: 14px; }
+.uc-body {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,.6);
+  line-height: 1.8;
+}
+.uc-summary-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: rgba(255,255,255,.75);
+  margin-bottom: 10px;
+}
+.uc-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4px;
+}
+.uc-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.uc-save {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,.2);
+  letter-spacing: .08em;
+}
+
+/* Meeting summary rows */
+.sum-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255,255,255,.6);
+}
+.sum-row:last-child { border-bottom: none; padding-bottom: 0; }
+.sum-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--red);
+  padding-top: 2px;
+}
+
+/* USE CASE CARD TABS */
+.uc-card-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  background: rgba(0,0,0,.2);
+}
+.uc-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.06);
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+}
+.uc-card:hover { border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.03); }
+.uc-card.active { border-color: var(--red); background: rgba(232,25,14,.06); }
+.ucc-icon { font-size: 18px; line-height: 1; }
+.ucc-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,.7);
+  letter-spacing: .02em;
+}
+.uc-card.active .ucc-label { color: rgba(255,255,255,.95); }
+.ucc-desc {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,.2);
+  letter-spacing: .08em;
+  line-height: 1.3;
+}
+.uc-card.active .ucc-desc { color: rgba(232,25,14,.7); }
+
+/* PANEL TITLE */
+.uc-panel-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  margin-bottom: 4px;
+}
+.uc-panel-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: rgba(255,255,255,.85);
+  letter-spacing: .01em;
+}
+.uc-panel-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.25);
+  text-transform: uppercase;
+}
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  padding-bottom: 16px;
+  margin-bottom: 4px;
+}
+.gpt-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: rgba(255,255,255,.8);
+  letter-spacing: .04em;
+  margin-bottom: 4px;
+}
+.gpt-logo::after {
+  content: ' ®';
+  font-size: 10px;
+  color: var(--red);
+  vertical-align: super;
+}
+.gpt-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.2);
+}
+.uc-gpt-chat { display: flex; flex-direction: column; gap: 14px; flex: 1; overflow-y: auto; }
+.gpt-q {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(255,255,255,.4);
+  background: rgba(255,255,255,.03);
+  padding: 12px 16px;
+  border-left: 2px solid rgba(255,255,255,.08);
+}
+.gpt-a {
+  font-size: 13px;
+  color: rgba(255,255,255,.6);
+  line-height: 1.7;
+  padding: 0 4px;
+  position: relative;
+}
+.gpt-a-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--red);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+.gpt-source {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,.2);
+  letter-spacing: .1em;
+  margin-top: 8px;
+  border-top: 1px solid rgba(255,255,255,.04);
+  padding-top: 8px;
+}
+
+/* SECURITY BANNER */
+.pc-security {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 16px 32px;
+  border-top: 1px solid rgba(255,255,255,.05);
+  background: rgba(255,255,255,.015);
+}
+.sec-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,.25);
+  letter-spacing: .1em;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.sec-item svg { color: rgba(255,255,255,.3); flex-shrink: 0; }
+/* PERSONAMIND CHAT */
+.uc-gpt-chat { display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto; }
+.gpt-q {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(255,255,255,.45);
+  background: rgba(255,255,255,.03);
+  padding: 10px 14px;
+  border-left: 2px solid rgba(255,255,255,.08);
+  line-height: 1.5;
+}
+.gpt-a {
+  font-size: 13px;
+  color: rgba(255,255,255,.65);
+  line-height: 1.75;
+  padding: 2px 6px;
+}
+.gpt-a-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--red);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 5px;
+}
+.gpt-source {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,.2);
+  letter-spacing: .08em;
+  margin-top: 6px;
+  border-top: 1px solid rgba(255,255,255,.04);
+  padding-top: 6px;
+}
+
+.rv { color: var(--red); font-style: normal; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.r1{transition-delay:.1s} .r2{transition-delay:.2s} .r3{transition-delay:.3s} .r4{transition-delay:.4s} .r5{transition-delay:.5s}
+
+/* ─── BRAND MOTIF ─── */
+.motif-svg { position: absolute; pointer-events: none; user-select: none; }
+.hero-motif { right: -60px; top: 50%; transform: translateY(-50%); width: min(520px, 45vw); opacity: 0; animation: motifIn 1.4s cubic-bezier(.16,1,.3,1) 0.8s forwards; z-index: 2; }
+@keyframes motifIn { from{opacity:0;transform:translateY(-50%) scale(.92) rotate(-6deg)} to{opacity:1;transform:translateY(-50%) scale(1) rotate(0deg)} }
+
+/* ─── TRUST BAR ─── */
+.trust-bar {
+  background: var(--cream-dark);
+  border-top: 1px solid rgba(26,24,22,.07);
+  border-bottom: 1px solid rgba(26,24,22,.07);
+  padding: 18px 68px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  position: relative;
+}
+.trust-bar-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  white-space: nowrap;
+  padding-right: 40px;
+  border-right: 1px solid rgba(26,24,22,.1);
+  flex-shrink: 0;
+}
+.trust-bar-track {
+  display: flex;
+  align-items: center;
+  gap: 52px;
+  padding-left: 40px;
+  animation: trustScroll 22s linear infinite;
+  white-space: nowrap;
+}
+@keyframes trustScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.trust-item {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(26,24,22,.28);
+  letter-spacing: .02em;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.trust-item::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--red);
+  opacity: .5;
+  flex-shrink: 0;
+}
+
+/* ─── STATS STRIP ─── */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(26,24,22,.07);
+  border-bottom: 1px solid rgba(26,24,22,.07);
+  background: var(--white);
+  position: relative;
+  z-index: 2;
+}
+.stat-item {
+  padding: 44px 56px;
+  border-right: 1px solid rgba(26,24,22,.07);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 5vw, 72px);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -.03em;
+}
+.stat-num em { font-style: italic; color: var(--red); }
+.stat-label {
+  font-size: 13px;
+  color: var(--grey);
+  font-weight: 300;
+  line-height: 1.5;
+  max-width: 200px;
+}
+.stat-label strong { color: var(--ink); font-weight: 500; }
+
+/* ─── BRAND MOTIF SECTION DIVIDER ─── */
+.motif-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background: var(--cream);
+  overflow: hidden;
+  opacity: .06;
+  pointer-events: none;
+}
+
+/* ─── RESPONSIVE additions ─── */
+@media (max-width: 1024px) {
+  .hero-motif { display: none; }
+  .trust-bar { padding: 16px 40px; }
+  .stats-strip { grid-template-columns: 1fr 1fr; }
+  .stat-item:nth-child(3) { border-right: none; grid-column: 1 / -1; border-top: 1px solid rgba(26,24,22,.07); }
+}
+@media (max-width: 768px) {
+  .trust-bar { padding: 14px 20px; gap: 0; }
+  .trust-bar-label { font-size: 8px; padding-right: 20px; }
+  .trust-bar-track { padding-left: 20px; gap: 36px; }
+  .trust-item { font-size: 13px; }
+  .stats-strip { grid-template-columns: 1fr; }
+  .stat-item { padding: 32px 24px; border-right: none; border-bottom: 1px solid rgba(26,24,22,.07); }
+  .stat-item:last-child { border-bottom: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="noise-overlay"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">person<em>ai</em>se</a>
+  <ul class="nav-center">
+    <li><a href="#product">Product</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#manifesto">Manifesto</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#manifesto" class="nav-pill">Our Story</a>
+    <a href="#waitlist" class="nav-cta">Reserve Now</a>
+  </div>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile-menu" id="mobileMenu">
+  <a href="#product" onclick="closeMobile()">Product</a>
+  <a href="#how-it-works" onclick="closeMobile()">How It Works</a>
+  <a href="#manifesto" onclick="closeMobile()">Manifesto</a>
+  <a href="#waitlist" onclick="closeMobile()" style="color:var(--red)">Reserve →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-noise" id="heroNoise"></div>
+  <div class="hero-line-v"></div>
+
+  <!-- BRAND MOTIF — persona wave -->
+  <svg class="motif-svg hero-motif" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer rings -->
+    <circle cx="240" cy="240" r="220" stroke="rgba(26,24,22,.04)" stroke-width="1"/>
+    <circle cx="240" cy="240" r="180" stroke="rgba(26,24,22,.05)" stroke-width="1"/>
+    <circle cx="240" cy="240" r="140" stroke="rgba(26,24,22,.06)" stroke-width="1"/>
+    <circle cx="240" cy="240" r="100" stroke="rgba(26,24,22,.07)" stroke-width="1"/>
+    <circle cx="240" cy="240" r="60" stroke="rgba(26,24,22,.08)" stroke-width="1"/>
+    <!-- Radial spokes -->
+    <line x1="240" y1="20" x2="240" y2="460" stroke="rgba(26,24,22,.03)" stroke-width="1"/>
+    <line x1="20" y1="240" x2="460" y2="240" stroke="rgba(26,24,22,.03)" stroke-width="1"/>
+    <line x1="84" y1="84" x2="396" y2="396" stroke="rgba(26,24,22,.03)" stroke-width="1"/>
+    <line x1="396" y1="84" x2="84" y2="396" stroke="rgba(26,24,22,.03)" stroke-width="1"/>
+    <!-- Voice waveform at center -->
+    <g transform="translate(240,240)">
+      <!-- Wave bars — persona heartbeat -->
+      <rect x="-64" y="-6" width="6" height="12" rx="3" fill="rgba(232,25,14,.15)"/>
+      <rect x="-52" y="-14" width="6" height="28" rx="3" fill="rgba(232,25,14,.2)"/>
+      <rect x="-40" y="-28" width="6" height="56" rx="3" fill="rgba(232,25,14,.35)"/>
+      <rect x="-28" y="-18" width="6" height="36" rx="3" fill="rgba(232,25,14,.25)"/>
+      <rect x="-16" y="-36" width="6" height="72" rx="3" fill="rgba(232,25,14,.5)"/>
+      <rect x="-4" y="-44" width="6" height="88" rx="3" fill="rgba(232,25,14,.65)"/>
+      <rect x="8" y="-34" width="6" height="68" rx="3" fill="rgba(232,25,14,.5)"/>
+      <rect x="20" y="-20" width="6" height="40" rx="3" fill="rgba(232,25,14,.3)"/>
+      <rect x="32" y="-28" width="6" height="56" rx="3" fill="rgba(232,25,14,.35)"/>
+      <rect x="44" y="-12" width="6" height="24" rx="3" fill="rgba(232,25,14,.2)"/>
+      <rect x="56" y="-6" width="6" height="12" rx="3" fill="rgba(232,25,14,.12)"/>
+    </g>
+    <!-- Dot at exact center -->
+    <circle cx="240" cy="240" r="5" fill="var(--red)" opacity=".7"/>
+    <!-- Corner annotations (tiny) -->
+    <text x="248" y="44" font-family="monospace" font-size="9" fill="rgba(26,24,22,.18)" letter-spacing="2">PERSONA</text>
+    <text x="248" y="436" font-family="monospace" font-size="9" fill="rgba(26,24,22,.18)" letter-spacing="2">ACTIVE</text>
+  </svg>
+
+
+  <div class="hero-inner">
+    <div class="hero-badge"><div class="pulse"></div>personaise — Persona v<span class="rv">01</span> · Now Available to Reserve</div>
+
+    <h1 class="hero-headline">
+      Your AI that<br>
+      knows you <em>deeply.</em><br>
+      Acts <span class="outline">as you.</span>
+    </h1>
+
+    <div class="hero-sub-row">
+      <p class="hero-sub">
+        Persona v<span class="rv">01</span> is a wearable that quietly listens to your day.
+        <strong>personaise builds your AI identity from it</strong> — and uses it to draft, decide, and act on your behalf.
+        This isn't a tool. It's <em>you</em>, scaled.
+      </p>
+      <div class="hero-right-col">
+        <div class="hero-ctas">
+          <a href="#waitlist" class="btn-primary">Reserve Persona v<span class="rv">01</span> →</a>
+          <a href="#how-it-works" class="btn-ghost">See how it works ↓</a>
+        </div>
+        <div class="hero-footnote">
+          <div class="hero-footnote-label">[ the distinction ]</div>
+          <div class="hero-footnote-text">"Every other wearable records you. Persona v<span class="rv">01</span> becomes you."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span class="hero-scroll-text">Scroll</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-bar-label">Early adopters</div>
+  <div class="trust-bar-track">
+    <span class="trust-item">Founders & operators</span>
+    <span class="trust-item">Sales professionals</span>
+    <span class="trust-item">Product managers</span>
+    <span class="trust-item">Consultants</span>
+    <span class="trust-item">Executives</span>
+    <span class="trust-item">Investors</span>
+    <span class="trust-item">Builders</span>
+    <!-- duplicate for seamless loop -->
+    <span class="trust-item">Founders & operators</span>
+    <span class="trust-item">Sales professionals</span>
+    <span class="trust-item">Product managers</span>
+    <span class="trust-item">Consultants</span>
+    <span class="trust-item">Executives</span>
+    <span class="trust-item">Investors</span>
+    <span class="trust-item">Builders</span>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Clip it on <span class="x">×</span> Speak naturally <span class="x">×</span> It takes care of the rest</span>
+    <span class="marquee-item">Not a recorder <span class="x">×</span> A second brain that sounds like your first</span>
+    <span class="marquee-item">Your tone <span class="x">×</span> Your context <span class="x">×</span> Your relationships</span>
+    <span class="marquee-item">The AI that knows you better than your inbox does</span>
+    <span class="marquee-item">Drafts <span class="x">×</span> Schedules <span class="x">×</span> Follows up — always as you</span>
+    <span class="marquee-item">Clip it on <span class="x">×</span> Speak naturally <span class="x">×</span> It takes care of the rest</span>
+    <span class="marquee-item">Not a recorder <span class="x">×</span> A second brain that sounds like your first</span>
+    <span class="marquee-item">Your tone <span class="x">×</span> Your context <span class="x">×</span> Your relationships</span>
+    <span class="marquee-item">The AI that knows you better than your inbox does</span>
+    <span class="marquee-item">Drafts <span class="x">×</span> Schedules <span class="x">×</span> Follows up — always as you</span>
+  </div>
+</div>
+
+<!-- SPLIT INTRO -->
+<section class="split-intro" id="product">
+  <div class="split-left reveal">
+    <div class="split-left-noise" id="splitNoise"></div>
+    <div><div class="split-label">The Device</div></div>
+    <h2 class="split-headline">Most wearables<br>record you. Persona v<span class="rv">01</span><br><em>becomes you.</em></h2>
+    <p class="split-footnote">There's a category of device that captures your world. Persona v<span class="rv">01</span> goes further — it builds a living, evolving model of your identity from everything it hears.</p>
+    <div class="split-left-num">01</div>
+  </div>
+  <div class="split-right reveal r2">
+    <div class="split-right-noise" id="splitRightNoise"></div>
+    <p class="body-text">Recording a meeting is table stakes. <strong>What's rare is a device that understands the person in the meeting.</strong> Persona v<span class="rv">01</span> doesn't just transcribe — it learns your phrasing, your relationships, your professional style, and feeds that understanding into everything it does for you.</p>
+    <div class="pull-quote">"Clip it on. Say the word. It drafts, schedules, follows up — sounding exactly like you wrote every word yourself."</div>
+    <p class="body-text">Every conversation makes it sharper. Every instruction it carries out makes it more you. <strong>A wearable that doesn't just live on your body — it lives inside how you work.</strong></p>
+  </div>
+</section>
+
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stat-item reveal">
+    <div class="stat-num">2<em>×</em></div>
+    <div class="stat-label"><strong>Twice as productive</strong> in the first week of daily use</div>
+  </div>
+  <div class="stat-item reveal r1">
+    <div class="stat-num">142<em>+</em></div>
+    <div class="stat-label"><strong>Interactions learned</strong> per user in the first 30 days on average</div>
+  </div>
+  <div class="stat-item reveal r2">
+    <div class="stat-num"><em>∞</em></div>
+    <div class="stat-label"><strong>Gets sharper forever</strong> — every conversation makes your persona more you</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="demo-section" id="how-it-works">
+  <div class="demo-section-noise" id="demoNoise"></div>
+
+  <!-- Section header -->
+  <div class="demo-header reveal">
+    <div>
+      <div class="demo-h-label">How It Works</div>
+      <h2 class="demo-h-title">Three steps.<br><em>One version of you</em><br>that never sleeps.</h2>
+    </div>
+    <div class="demo-h-right">Persona v<span class="rv">01</span> · Hardware<br>personaise · Software<br>PersonaMind · Your AI</div>
+  </div>
+
+  <!-- 3-STEP EXPLAINER -->
+  <div class="steps-row reveal r1">
+    <div class="step-item">
+      <div class="step-num">01</div>
+      <div class="step-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--red)" stroke-width="1.2"><circle cx="14" cy="14" r="8"/><circle cx="14" cy="14" r="3" fill="var(--red)" stroke="none"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="14" y1="22" x2="14" y2="26"/><line x1="2" y1="14" x2="6" y2="14"/><line x1="22" y1="14" x2="26" y2="14"/></svg>
+      </div>
+      <div class="step-title">Persona v<span class="rv">01</span> listens</div>
+      <div class="step-desc">Clip it on. It quietly captures your conversations, meetings, and voice commands throughout your day — privately, on your phone.</div>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="step-item">
+      <div class="step-num">02</div>
+      <div class="step-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--red)" stroke-width="1.2"><circle cx="14" cy="10" r="5"/><path d="M4 24c0-5.5 4.5-9 10-9s10 3.5 10 9"/><circle cx="14" cy="10" r="2" fill="var(--red)" stroke="none"/></svg>
+      </div>
+      <div class="step-title">Your persona is built</div>
+      <div class="step-desc">personaise learns your tone, relationships, habits, and context. It builds a living model of you — constantly updated, always evolving.</div>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="step-item">
+      <div class="step-num">03</div>
+      <div class="step-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--red)" stroke-width="1.2"><polyline points="4,16 9,9 14,13 20,5 26,9"/><circle cx="26" cy="9" r="2" fill="var(--red)" stroke="none"/><line x1="4" y1="22" x2="24" y2="22" stroke-opacity=".3"/></svg>
+      </div>
+      <div class="step-title">It acts as you</div>
+      <div class="step-desc">Draft emails, summarise meetings, schedule calls, or just ask it anything — every response sounds exactly like you, powered by your own data.</div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE PERSONA CARD -->
+  <div class="persona-card reveal r2">
+    <div class="terminal-noise" id="termNoise"></div>
+
+    <!-- Header -->
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <div class="pc-avatar">A</div>
+        <div>
+          <div class="pc-name">Arjun Sharma <span class="pc-name-sub">· Your Persona</span></div>
+          <div class="pc-role">Product Manager · SaaS · Mumbai · 142 interactions learned</div>
+        </div>
+      </div>
+      <div class="pc-header-right">
+        <div class="pc-status"><span class="pc-dot"></span>Persona Active</div>
+        <div class="pc-device">Persona v<span class="rv">01</span> · On-device · Encrypted</div>
+      </div>
+    </div>
+
+    <div class="pc-body">
+      <!-- Left: simplified persona snapshot -->
+      <div class="pc-traits">
+        <div class="pc-section-label">What personaise knows about you</div>
+
+        <div class="trait-row">
+          <div class="trait-label">Writing tone</div>
+          <div class="trait-bar-wrap"><div class="trait-bar" style="width:82%"></div></div>
+          <div class="trait-tag">Professional · Concise</div>
+        </div>
+        <div class="trait-row">
+          <div class="trait-label">Communication style</div>
+          <div class="trait-bar-wrap"><div class="trait-bar" style="width:65%"></div></div>
+          <div class="trait-tag">Direct · Warm</div>
+        </div>
+        <div class="trait-row">
+          <div class="trait-label">Decision speed</div>
+          <div class="trait-bar-wrap"><div class="trait-bar" style="width:88%"></div></div>
+          <div class="trait-tag">Fast, data-driven</div>
+        </div>
+
+        <div class="pc-divider"></div>
+        <div class="pc-section-label">People it knows you with</div>
+        <div class="rel-chips">
+          <div class="rel-chip">Rohan · formal</div>
+          <div class="rel-chip">Priya · casual</div>
+          <div class="rel-chip">Dev team · async</div>
+          <div class="rel-chip">Investors · careful</div>
+        </div>
+
+        <div class="pc-divider"></div>
+        <div class="pc-evolve"><span class="pc-dot-sm"></span>Updated 3 min ago · always learning</div>
+      </div>
+
+      <!-- Right: card-tab selectors + content -->
+      <div class="pc-usecases">
+
+        <!-- USE CASE SELECTOR CARDS -->
+        <div class="uc-card-tabs">
+          <button class="uc-card active" onclick="switchTab(this,'chat')">
+            <div class="ucc-icon">💬</div>
+            <div class="ucc-label">PersonaMind</div>
+            <div class="ucc-desc">Chat with your AI</div>
+          </button>
+          <button class="uc-card" onclick="switchTab(this,'email')">
+            <div class="ucc-icon">✉️</div>
+            <div class="ucc-label">Email Drafts</div>
+            <div class="ucc-desc">In your exact tone</div>
+          </button>
+          <button class="uc-card" onclick="switchTab(this,'meeting')">
+            <div class="ucc-icon">📋</div>
+            <div class="ucc-label">Meeting Recap</div>
+            <div class="ucc-desc">What actually matters</div>
+          </button>
+          <button class="uc-card" onclick="switchTab(this,'schedule')">
+            <div class="ucc-icon">📅</div>
+            <div class="ucc-label">Scheduling</div>
+            <div class="ucc-desc">No app needed</div>
+          </button>
+        </div>
+
+        <!-- CHAT — PersonaMind -->
+        <div class="uc-panel active" id="tab-chat">
+          <div class="uc-panel-title">
+            <span class="uc-panel-name">PersonaMind</span>
+            <span class="uc-panel-tag">Your private AI — knows you, not just the internet</span>
+          </div>
+          <div class="uc-gpt-chat">
+            <div class="gpt-q">"What did Rohan say about the Q4 roadmap?"</div>
+            <div class="gpt-a">
+              <span class="gpt-a-label">PersonaMind</span>
+              Rohan flagged timeline risk on the analytics module in your Oct 14 sync. He suggested deprioritising it for Q4 and revisiting in January.
+              <div class="gpt-source">📼 Your recording · Oct 14, 11:32am</div>
+            </div>
+            <div class="gpt-q">"How do I usually handle difficult conversations?"</div>
+            <div class="gpt-a">
+              <span class="gpt-a-label">PersonaMind</span>
+              You lead with shared context first, then the problem — almost never a direct ask upfront. You often open with <em>"I wanted to flag something early."</em>
+              <div class="gpt-source">🧠 Learned from 38 of your conversations</div>
+            </div>
+          </div>
+          <div class="uc-footer">
+            <div class="uc-badges"><span class="badge-pill">On-device · private</span><span class="badge-pill">Your data only</span></div>
+            <div class="uc-save">Not ChatGPT. This is you.</div>
+          </div>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="uc-panel" id="tab-email">
+          <div class="uc-panel-title">
+            <span class="uc-panel-name">Email Drafts</span>
+            <span class="uc-panel-tag">Just say what you need — it writes in your voice</span>
+          </div>
+          <div class="uc-voice-input">
+            <span class="prompt-dot"></span>
+            <span class="uc-voice-text">"Draft a leave email for Rohan — this client week was brutal"</span>
+          </div>
+          <div class="uc-thinking">
+            <span>Using your tone · Rohan prefers formal</span>
+            <span class="t-dots"><span></span><span></span><span></span></span>
+          </div>
+          <div class="uc-output-card">
+            <div class="uc-meta">To: <span>Rohan Mehta</span> &nbsp;·&nbsp; Subject: <span>Friday — taking the day</span></div>
+            <div class="uc-divider"></div>
+            <div class="uc-body">Hey Rohan,<br><br>This week's client sessions ran much longer than expected. I'd like to take Friday as a personal day — I'll make sure everything is covered before then.<br><br>Thanks<span class="t-caret"></span></div>
+          </div>
+          <div class="uc-footer">
+            <div class="uc-badges"><span class="badge-pill">Your tone</span><span class="badge-pill">Relationship-aware</span></div>
+            <div class="uc-save">Saved to drafts · waiting for you to send</div>
+          </div>
+        </div>
+
+        <!-- MEETING -->
+        <div class="uc-panel" id="tab-meeting">
+          <div class="uc-panel-title">
+            <span class="uc-panel-name">Meeting Recap</span>
+            <span class="uc-panel-tag">Decisions, your actions, nothing else</span>
+          </div>
+          <div class="uc-voice-input">
+            <span class="prompt-dot"></span>
+            <span class="uc-voice-text">Product sync just ended · 47 min · 6 people</span>
+          </div>
+          <div class="uc-thinking">
+            <span>Filtering decisions from discussion</span>
+            <span class="t-dots"><span></span><span></span><span></span></span>
+          </div>
+          <div class="uc-output-card">
+            <div class="uc-summary-title">Product Sync · Key takeaways</div>
+            <div class="uc-divider"></div>
+            <div class="uc-body">
+              <div class="sum-row"><span class="sum-label">Decided</span><span>Launch pushed to March 12</span></div>
+              <div class="sum-row"><span class="sum-label">You need to</span><span>Send revised spec to Priya by Thursday EOD</span></div>
+              <div class="sum-row"><span class="sum-label">Watch</span><span>Backend dependency is still unresolved</span></div>
+            </div>
+          </div>
+          <div class="uc-footer">
+            <div class="uc-badges"><span class="badge-pill">In your language</span><span class="badge-pill">No fluff</span></div>
+            <div class="uc-save">Follow-ups queued automatically</div>
+          </div>
+        </div>
+
+        <!-- SCHEDULE -->
+        <div class="uc-panel" id="tab-schedule">
+          <div class="uc-panel-title">
+            <span class="uc-panel-name">Scheduling</span>
+            <span class="uc-panel-tag">Say it out loud — it handles the rest</span>
+          </div>
+          <div class="uc-voice-input">
+            <span class="prompt-dot"></span>
+            <span class="uc-voice-text">"Book a 30-min sync with Priya this week, not before 11"</span>
+          </div>
+          <div class="uc-thinking">
+            <span>Checking calendars · reading your preferences</span>
+            <span class="t-dots"><span></span><span></span><span></span></span>
+          </div>
+          <div class="uc-output-card">
+            <div class="uc-summary-title">Done — Thursday 11:30am</div>
+            <div class="uc-divider"></div>
+            <div class="uc-body">
+              <div class="sum-row"><span class="sum-label">With</span><span>Priya Kapoor</span></div>
+              <div class="sum-row"><span class="sum-label">Why this slot</span><span>After your focus block. No conflicts on either side.</span></div>
+              <div class="sum-row"><span class="sum-label">Invite tone</span><span>Casual — as you always are with Priya</span></div>
+            </div>
+          </div>
+          <div class="uc-footer">
+            <div class="uc-badges"><span class="badge-pill">Preference-aware</span><span class="badge-pill">Zero app-switching</span></div>
+            <div class="uc-save">Invite sent · no input needed</div>
+          </div>
+        </div>
+
+      </div><!-- end pc-usecases -->
+    </div>
+
+    <!-- Security strip -->
+    <div class="pc-security">
+      <div class="sec-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L10 3V6C10 8.5 8 10.5 6 11C4 10.5 2 8.5 2 6V3L6 1Z" stroke="currentColor" stroke-width="1"/></svg>On-device processing</div>
+      <div class="sec-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1"/><path d="M4 5V3.5C4 2.1 5 1 6 1C7 1 8 2.1 8 3.5V5" stroke="currentColor" stroke-width="1"/></svg>End-to-end encrypted</div>
+      <div class="sec-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1"/><line x1="6" y1="3" x2="6" y2="6.5" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="8" r=".6" fill="currentColor"/></svg>Your recordings never leave your phone</div>
+      <div class="sec-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="currentColor" stroke-width="1.2"/></svg>No cloud storage</div>
+    </div>
+  </div>
+
+  <p class="demo-caption reveal r3">Persona v<span class="rv">01</span> hears your world. personaise becomes your most capable self.</p>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-divider">
+  <div class="ticker-divider-noise" id="tickerNoise"></div>
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="dot">●</span>Persona Engine</span>
+    <span class="ticker-item"><span class="dot">●</span>Smart Drafts</span>
+    <span class="ticker-item"><span class="dot">●</span>Calendar Intelligence</span>
+    <span class="ticker-item"><span class="dot">●</span>Meeting Memory</span>
+    <span class="ticker-item"><span class="dot">●</span>Relationship Graph</span>
+    <span class="ticker-item"><span class="dot">●</span>Task Autopilot</span>
+    <span class="ticker-item"><span class="dot">●</span>Persona Engine</span>
+    <span class="ticker-item"><span class="dot">●</span>Smart Drafts</span>
+    <span class="ticker-item"><span class="dot">●</span>Calendar Intelligence</span>
+    <span class="ticker-item"><span class="dot">●</span>Meeting Memory</span>
+    <span class="ticker-item"><span class="dot">●</span>Relationship Graph</span>
+    <span class="ticker-item"><span class="dot">●</span>Task Autopilot</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="features-noise" id="featNoise"></div>
+  <div class="features-glow"></div>
+  <div class="features-top">
+    <h2 class="features-h reveal">What Persona v<span class="rv">01</span><br><em>does that</em><br>others don't.</h2>
+    <div class="reveal r2">
+      <p class="features-desc">Most wearables stop at transcription. Persona v<span class="rv">01</span> starts there — and builds a living model of you from everything it hears.</p>
+      <div class="feat-ghost-num">06</div>
+    </div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card reveal">
+      <div class="feat-n">01</div>
+      <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="13" stroke-dasharray="3 3"/><line x1="16" y1="2" x2="16" y2="9"/><line x1="16" y1="23" x2="16" y2="30"/></svg>
+      <div class="feat-title">Persona Engine</div>
+      <p class="feat-desc">Builds a living model of your tone, vocabulary, and communication style from every conversation it hears.</p>
+    </div>
+    <div class="feat-card reveal r1">
+      <div class="feat-n">02</div>
+      <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><rect x="4" y="8" width="24" height="16"/><line x1="9" y1="13" x2="9" y2="19"/><line x1="14" y1="11" x2="14" y2="21"/><line x1="19" y1="14" x2="19" y2="18"/><line x1="24" y1="12" x2="24" y2="20"/></svg>
+      <div class="feat-title">Voice-to-Draft</div>
+      <p class="feat-desc">Say what you need aloud — personaise drafts the email, message, or doc in your exact tone. Saved until you approve.</p>
+    </div>
+    <div class="feat-card reveal r2">
+      <div class="feat-n">03</div>
+      <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><rect x="4" y="4" width="24" height="24" rx="1"/><line x1="4" y1="11" x2="28" y2="11"/><line x1="11" y1="4" x2="11" y2="11"/><line x1="21" y1="4" x2="21" y2="11"/><rect x="8" y="16" width="5" height="4"/><rect x="18" y="16" width="5" height="4"/></svg>
+      <div class="feat-title">Calendar Intelligence</div>
+      <p class="feat-desc">Hears you mention a meeting, finds the slot, books it around your preferences — no app-switching needed.</p>
+    </div>
+    <div class="feat-card reveal r3">
+      <div class="feat-n">04</div>
+      <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><ellipse cx="16" cy="16" rx="12" ry="8"/><circle cx="16" cy="16" r="3"/><line x1="4" y1="16" x2="13" y2="16"/><line x1="19" y1="16" x2="28" y2="16"/></svg>
+      <div class="feat-title">Meeting Memory</div>
+      <p class="feat-desc">Listens to your calls. Delivers summaries in your language — action items, decisions, follow-ups. No boilerplate.</p>
+    </div>
+    <div class="feat-card reveal r4">
+      <div class="feat-n">05</div>
+      <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><circle cx="16" cy="8" r="3"/><circle cx="6" cy="24" r="3"/><circle cx="26" cy="24" r="3"/><line x1="16" y1="11" x2="6" y2="21"/><line x1="16" y1="11" x2="26" y2="21"/><line x1="6" y1="21" x2="26" y2="21"/></svg>
+      <div class="feat-title">Relationship Graph</div>
+      <p class="feat-desc">Learns your contacts, your dynamic with each — so every draft is tonally right for the specific person receiving it.</p>
+    </div>
+    <div class="feat-card reveal r5">
+      <div class="feat-n">06</div>
+      <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><polyline points="4,20 10,12 16,17 22,8 28,14"/><circle cx="28" cy="14" r="2" fill="rgba(232,25,14,.8)" stroke="none"/></svg>
+      <div class="feat-title">Always-On Autopilot</div>
+      <p class="feat-desc">Follow-ups, reminders, acknowledgements — handled quietly from what it hears, always in your voice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy" id="manifesto">
+  <div class="philosophy-noise" id="philNoise"></div>
+  <div class="phil-bg-word">you.</div>
+  <div class="phil-inner">
+    <div class="phil-label reveal">The Manifesto</div>
+    <h2 class="phil-q reveal r1">
+      <span class="dim">Other wearables</span><br>
+      hear your words.<br>
+      Persona v<span class="rv">01</span> <em>understands</em><br>
+      <span class="dim">who is</span><br>
+      speaking them.
+    </h2>
+    <div class="phil-row reveal r2">
+      <div class="phil-line"></div>
+      <p class="phil-cite">We built personaise because transcription was never the hard part. Sounding like you — that was.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="waitlist">
+  <div class="cta-noise" id="ctaNoise"></div>
+  <div class="cta-glow"></div>
+  <div class="cta-eyebrow">Limited First Run — Persona v<span class="rv">01</span></div>
+  <h2 class="cta-h reveal">Wear your<br><em>sharpest</em> <span class="stroke">self.</span></h2>
+  <p class="cta-sub reveal r1">Persona v<span class="rv">01</span> ships to a limited first cohort. Reserve yours before the waitlist closes.</p>
+  <div class="cta-btns reveal r2">
+    <a href="#" class="cta-primary">Reserve Persona v<span class="rv">01</span> →</a>
+    <a href="#" class="cta-secondary">Read the Manifesto</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-noise" id="footerNoise"></div>
+  <div class="footer-logo">person<em style="font-style:normal;color:var(--red)">ai</em>se</div>
+  <ul class="footer-links"><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Contact</a></li></ul>
+  <div class="footer-copy">© 2025 personaise, Inc.</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── NOISE GENERATOR
+function makeNoise(el, size) {
+  if (!el) return;
+  const c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  const ctx = c.getContext('2d');
+  const img = ctx.createImageData(size, size);
+  for (let i = 0; i < img.data.length; i += 4) {
+    const v = Math.random() * 255 | 0;
+    img.data[i] = img.data[i+1] = img.data[i+2] = v;
+    img.data[i+3] = 255;
+  }
+  ctx.putImageData(img, 0, 0);
+  const url = c.toDataURL();
+  el.style.backgroundImage = `url(${url})`;
+  el.style.backgroundRepeat = 'repeat';
+}
+
+makeNoise(document.getElementById('noise-overlay'), 256);
+['heroNoise','splitNoise','splitRightNoise','demoNoise','termNoise','tickerNoise','featNoise','philNoise','ctaNoise','footerNoise'].forEach(id => makeNoise(document.getElementById(id), 200));
+
+// ── CURSOR
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx = -200, my = -200, rx = -200, ry = -200;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animC() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * .12; ry += (my - ry) * .12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animC);
+})();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.width='20px'; cursor.style.height='20px'; ring.style.borderColor='var(--red)'; ring.style.width='44px'; ring.style.height='44px'; });
+  el.addEventListener('mouseleave', () => { cursor.style.width='10px'; cursor.style.height='10px'; ring.style.borderColor='rgba(26,24,22,.35)'; ring.style.width='36px'; ring.style.height='36px'; });
+});
+
+// ── NAV SCROLL
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── SMOOTH SCROLL FOR NAV LINKS
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ── ACTIVE NAV HIGHLIGHT
+const sections = document.querySelectorAll('section[id], div[id]');
+const navLinks = document.querySelectorAll('.nav-center a');
+const activeObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.style.opacity = '.4');
+      const active = document.querySelector(`.nav-center a[href="#${e.target.id}"]`);
+      if (active) active.style.opacity = '1';
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(s => activeObserver.observe(s));
+
+// ── TAB SWITCHER
+function switchTab(btn, id) {
+  document.querySelectorAll('.uc-card').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.uc-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const panel = document.getElementById('tab-' + id);
+  if (panel) panel.classList.add('active');
+}
+
+// ── TRAIT BAR ANIMATION on scroll
+const traitObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.trait-bar').forEach(bar => {
+        const w = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => { bar.style.width = w; }, 100);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.persona-card').forEach(c => traitObserver.observe(c));
+
+
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ── MOBILE MENU
+const hamburger = document.getElementById('navHamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger && hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+  const bars = hamburger.querySelectorAll('span');
+  if (mobileMenu.classList.contains('open')) {
+    bars[0].style.transform = 'rotate(45deg) translate(4px,5px)';
+    bars[1].style.opacity = '0';
+    bars[2].style.transform = 'rotate(-45deg) translate(4px,-5px)';
+  } else {
+    bars.forEach(b => { b.style.transform=''; b.style.opacity=''; });
+  }
+});
+function closeMobile() {
+  mobileMenu.classList.remove('open');
+  const bars = hamburger.querySelectorAll('span');
+  bars.forEach(b => { b.style.transform=''; b.style.opacity=''; });
+}
+
+// ── MOTIF WAVEFORM ANIMATION
+(function animMotif() {
+  const bars = document.querySelectorAll('.hero-motif rect');
+  const heights = [12,28,56,36,72,88,68,40,56,24,12];
+  const offsets = [0,.15,.3,.45,.6,.75,.6,.45,.3,.15,0];
+  let t = 0;
+  function frame() {
+    t += 0.022;
+    bars.forEach((bar, i) => {
+      const base = heights[i];
+      const wave = base + Math.sin(t + offsets[i] * Math.PI * 2) * base * 0.38;
+      bar.setAttribute('height', wave);
+      bar.setAttribute('y', -wave / 2);
+    });
+    requestAnimationFrame(frame);
+  }
+  if (bars.length) frame();
+})();
+
+// ── CURSOR RING ADAPTS ON DARK SECTIONS
+const darkSections = document.querySelectorAll('.features, .cta, footer, .marquee-wrap');
+const darkObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      ring.style.borderColor = 'rgba(255,255,255,.35)';
+    } else {
+      ring.style.borderColor = 'rgba(26,24,22,.35)';
+    }
+  });
+}, { threshold: 0.5 });
+darkSections.forEach(s => darkObserver.observe(s));
+</script>
+</body>
+</html>
