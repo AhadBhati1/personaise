@@ -30,7 +30,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
 
 /* NAV */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   display: flex; justify-content: space-between; align-items: center;
   padding: 28px 68px;
   transition: background .4s, padding .3s, box-shadow .3s;
@@ -108,7 +108,7 @@ nav.scrolled {
   justify-content: center;
   background: var(--cream);
   overflow: hidden;
-  padding: 180px 68px 80px;
+  padding: 200px 68px 80px;
 }
 .hero-noise { position: absolute; inset: 0; pointer-events: none; z-index: 1; opacity: 0.05; background-repeat: repeat; }
 .hero::before {
@@ -348,8 +348,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   .nav-center { display: none; }
   .nav-right { display: none; }
   .nav-hamburger { display: flex; }
-  .hero { height: auto; min-height: 100svh; padding: 110px 20px 56px; }
-  .hero-headline { font-size: clamp(42px, 12vw, 68px); }
+  .hero { height: auto; min-height: 100svh; padding: 130px 20px 60px; }
+  .hero-headline { font-size: clamp(38px, 10vw, 60px); line-height: 1.0; }
   .hero-badge { font-size: 9px; padding: 6px 12px; margin-bottom: 24px; }
   .hero-sub { font-size: 14px; max-width: 100%; }
   .hero-sub-row { flex-direction: column; gap: 24px; margin-top: 24px; padding-top: 20px; }
@@ -369,10 +369,18 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   .pull-quote { font-size: 20px; padding-left: 20px; }
   .demo-section { padding: 72px 20px; }
   .demo-header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 40px; }
-  .demo-h-right { text-align: left; font-size: 10px; }
-  .steps-row { gap: 24px; padding: 28px 0; margin-bottom: 32px; }
-  .step-title { font-size: 19px; }
-  .step-desc { font-size: 13px; max-width: 100%; }
+  .demo-h-right { display: none; }
+  .demo-h-title { font-size: clamp(28px, 8vw, 44px); }
+  .terminal { border-radius: 0; }
+  .terminal-body { padding: 20px; }
+  .t-line { font-size: 10px; margin-bottom: 16px; }
+  .t-email-body { font-size: 14px; }
+  .steps-row { grid-template-columns: 1fr; gap: 0; padding: 0; margin-bottom: 32px; border: none; }
+  .step-item { padding: 28px 0; border-bottom: 1px solid rgba(26,24,22,.07); }
+  .step-item:last-child { border-bottom: none; }
+  .step-arrow { display: none; }
+  .step-title { font-size: 20px; }
+  .step-desc { font-size: 14px; max-width: 100%; }
   .pc-header { padding: 14px 16px; }
   .pc-name { font-size: 15px; }
   .pc-header-right { display: none; }
@@ -918,6 +926,24 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 }
 .stat-label strong { color: var(--ink); font-weight: 500; }
 
+
+/* ─── BOTTOM SCROLL GLOW ─── */
+.scroll-glow {
+  position: fixed;
+  bottom: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 300px;
+  background: radial-gradient(ellipse at center bottom, rgba(232,25,14,.22) 0%, rgba(232,25,14,.06) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity .8s ease;
+  filter: blur(8px);
+}
+.scroll-glow.visible { opacity: 1; }
+
 /* ─── COMING SOON STRIP ─── */
 .coming-soon-strip {
   background: var(--ink);
@@ -1073,6 +1099,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 <body>
 
 <div id="noise-overlay"></div>
+<div class="scroll-glow" id="scrollGlow"></div>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
@@ -1143,11 +1170,12 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="hero-inner">
 
     <h1 class="hero-headline">
-      The world has<br>
-      enough AI that<br>
-      knows <em>everything.</em><br>
-      <span class="outline">We built one</span><br>
-      that knows <em>you.</em>
+      An AI that learns<br>
+      how <em>you</em> think,<br>
+      write, and <em>work.</em><br>
+      <span class="outline">So you never</span><br>
+      have to explain<br>
+      yourself <em>twice.</em>
     </h1>
 
     <div class="hero-sub-row">
@@ -1160,10 +1188,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
         <div class="hero-ctas">
           <a href="#waitlist" class="btn-primary">Get Early Access →</a>
         </div>
-        <div class="hero-footnote">
-          <div class="hero-footnote-label">[ the distinction ]</div>
-          <div class="hero-footnote-text">"Other wearables make you more efficient. Persona v<span class="rv">01</span> makes you more <em>you.</em>"</div>
-        </div>
+
       </div>
     </div>
 
@@ -1688,6 +1713,18 @@ const revealObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
 
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+
+// ── BOTTOM SCROLL GLOW
+const scrollGlow = document.getElementById('scrollGlow');
+if (scrollGlow) {
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY + window.innerHeight;
+    const total = document.documentElement.scrollHeight;
+    const nearBottom = (total - scrolled) < 400;
+    scrollGlow.classList.toggle('visible', nearBottom);
+  }, { passive: true });
+}
 
 // ── NOTIFY FORM
 function handleNotify(btn) {
