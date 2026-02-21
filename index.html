@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Personai — The AI That Is You</title>
+<title>personaise — Built for the way you think</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
@@ -376,21 +376,29 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   .t-line { font-size: 10px; margin-bottom: 16px; }
   .t-email-body { font-size: 14px; }
   .steps-row { grid-template-columns: 1fr; gap: 0; padding: 0; margin-bottom: 32px; border: none; }
-  .step-item { padding: 28px 0; border-bottom: 1px solid rgba(26,24,22,.07); }
+  .step-item { padding: 22px 0; border-bottom: 1px solid rgba(26,24,22,.07); flex-direction: row; align-items: flex-start; gap: 20px; }
   .step-item:last-child { border-bottom: none; }
   .step-arrow { display: none; }
-  .step-title { font-size: 20px; }
-  .step-desc { font-size: 14px; max-width: 100%; }
+  .step-icon { display: none; }
+  .step-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-style: italic; color: rgba(232,25,14,.3); line-height: 1; flex-shrink: 0; width: 36px; margin-top: 2px; letter-spacing: -.02em; }
+  .step-title { font-size: 18px; }
+  .step-desc { font-size: 13px; max-width: 100%; }
   .pc-header { padding: 14px 16px; }
   .pc-name { font-size: 15px; }
   .pc-header-right { display: none; }
-  .pc-traits { padding: 16px; }
+  .pc-body { grid-template-columns: 1fr; }
+  .pc-traits { display: none; }
   .uc-card-tabs { grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 10px; }
+  .ucc-desc { display: none; }
   .uc-panel { padding: 14px 14px 12px; gap: 10px; }
   .uc-voice-text { font-size: 14px; }
   .uc-body { font-size: 13px; }
-  .pc-security { gap: 14px; padding: 12px 14px; flex-wrap: wrap; }
+  .sum-row { grid-template-columns: 68px 1fr; font-size: 12px; }
+  .gpt-q { font-size: 13px; padding: 8px 12px; }
+  .gpt-a { font-size: 12px; line-height: 1.7; }
+  .pc-security { gap: 10px; padding: 10px 14px; flex-wrap: wrap; }
   .sec-item { font-size: 9px; }
+  .sec-item:nth-child(4) { display: none; }
   .features { padding: 72px 20px; }
   .features-top { grid-template-columns: 1fr; gap: 20px; margin-bottom: 40px; padding-bottom: 32px; }
   .feat-grid { grid-template-columns: 1fr; }
@@ -930,19 +938,50 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 /* ─── BOTTOM SCROLL GLOW ─── */
 .scroll-glow {
   position: fixed;
-  bottom: -120px;
+  bottom: -80px;
   left: 50%;
   transform: translateX(-50%);
-  width: 700px;
-  height: 300px;
-  background: radial-gradient(ellipse at center bottom, rgba(232,25,14,.22) 0%, rgba(232,25,14,.06) 40%, transparent 70%);
+  width: 900px;
+  height: 420px;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(232,25,14,.55) 0%, rgba(232,25,14,.22) 35%, transparent 70%);
   pointer-events: none;
   z-index: 9999;
   opacity: 0;
-  transition: opacity .8s ease;
-  filter: blur(8px);
+  transition: opacity 1s cubic-bezier(.16,1,.3,1);
+  filter: blur(12px);
 }
 .scroll-glow.visible { opacity: 1; }
+.scroll-glow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 200px;
+  background: radial-gradient(ellipse at center bottom, rgba(232,25,14,.7) 0%, transparent 60%);
+  filter: blur(24px);
+}
+
+
+/* ─── TALLY EMBED ─── */
+.tally-wrap {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.08);
+}
+.tally-wrap iframe {
+  display: block;
+  width: 100%;
+  min-height: 160px;
+  border: none;
+}
 
 /* ─── COMING SOON STRIP ─── */
 .coming-soon-strip {
@@ -1111,7 +1150,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     <li><a href="#manifesto">Manifesto</a></li>
   </ul>
   <div class="nav-right">
-<a href="#how-it-works" class="nav-cta" style="background:transparent;color:var(--grey);border:1px solid rgba(26,24,22,.15);letter-spacing:.1em;">Get Early Access</a>
+<a href="#waitlist" class="nav-cta" style="background:transparent;color:var(--grey);border:1px solid rgba(26,24,22,.15);letter-spacing:.1em;">Get Early Access</a>
   </div>
   <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -1171,18 +1210,18 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 
     <h1 class="hero-headline">
       An AI that learns<br>
-      how <em>you</em> think,<br>
-      write, and <em>work.</em><br>
-      <span class="outline">So you never</span><br>
-      have to explain<br>
-      yourself <em>twice.</em>
+      how <em>you</em> write,<br>
+      think, <em>and work —</em><br>
+      <span class="outline">so you never</span><br>
+      explain yourself<br>
+      <em>twice.</em>
     </h1>
 
     <div class="hero-sub-row">
       <p class="hero-sub">
-        Persona v<span class="rv">01</span> is a wearable that quietly listens to your day.
-        <strong>personaise builds your AI identity from it</strong> — and uses it to draft, decide, and act on your behalf.
-        This isn't a tool. It's <em>you</em>, scaled.
+        A small wearable that listens to your day.
+        <strong>personaise learns how you communicate</strong> — and uses it to write, reply, and follow up exactly as you would.
+        Your voice. Your tone. Your relationships.
       </p>
       <div class="hero-right-col">
         <div class="hero-ctas">
@@ -1221,8 +1260,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="split-left reveal">
     <div class="split-left-noise" id="splitNoise"></div>
     <div><div class="split-label">The Device</div></div>
-    <h2 class="split-headline">Most wearables<br>record you. Persona v<span class="rv">01</span><br><em>becomes you.</em></h2>
-    <p class="split-footnote">There's a category of device that captures your world. Persona v<span class="rv">01</span> goes further — it builds a living, evolving model of your identity from everything it hears.</p>
+    <h2 class="split-headline">Other wearables<br>capture moments.<br>Persona v<span class="rv">01</span> <em>learns you.</em></h2>
+    <p class="split-footnote">Most devices ask you to remember for them. Persona v<span class="rv">01</span> remembers for you — building a picture of how you communicate that gets sharper every day.</p>
     <div class="split-left-num">01</div>
   </div>
   <div class="split-right reveal r2">
@@ -1494,7 +1533,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     </div>
   </div>
 
-  <p class="demo-caption reveal r3">Persona v<span class="rv">01</span> hears your world. personaise becomes your most capable self.</p>
+  <p class="demo-caption reveal r3">Everything above happens on your device. Nothing leaves your phone without your approval.</p>
 </section>
 
 <!-- TICKER -->
@@ -1521,9 +1560,9 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="features-noise" id="featNoise"></div>
   <div class="features-glow"></div>
   <div class="features-top">
-    <h2 class="features-h reveal">What Persona v<span class="rv">01</span><br><em>does that</em><br>others don't.</h2>
+    <h2 class="features-h reveal">Six things<br>Persona v<span class="rv">01</span><br><em>does for you.</em></h2>
     <div class="reveal r2">
-      <p class="features-desc">Most wearables stop at transcription. Persona v<span class="rv">01</span> starts there — and builds a living model of you from everything it hears.</p>
+      <p class="features-desc">It starts by listening. Then it starts understanding. Then it starts sounding exactly like you wrote every word yourself.</p>
       <div class="feat-ghost-num">06</div>
     </div>
   </div>
@@ -1574,16 +1613,16 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="phil-inner">
     <div class="phil-label reveal">The Manifesto</div>
     <h2 class="phil-q reveal r1">
-      <span class="dim">You are not</span><br>
-      a prompt.<br>
       You are not<br>
-      a <em>user.</em><br>
-      <span class="dim">You are the</span><br>
-      <em>model.</em>
+      a <em>prompt.</em><br>
+      <span class="dim">You shouldn't have to</span><br>
+      sound like<br>
+      <em>everyone else's</em><br>
+      <span class="dim">AI does.</span>
     </h2>
     <div class="phil-row reveal r2">
       <div class="phil-line"></div>
-      <p class="phil-cite">Every tool asks you to adapt to it. personaise is the first one built to adapt to you — your voice, your rhythm, your relationships. Completely.</p>
+      <p class="phil-cite">Every other AI flattens you into a user. personaise does the opposite — it listens until it sounds like you, thinks like you, and works the way only you do.</p>
     </div>
   </div>
 </section>
@@ -1593,14 +1632,19 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="cta-noise" id="ctaNoise"></div>
   <div class="cta-glow"></div>
   <div class="cta-eyebrow">Persona v<span class="rv">01</span> — Coming Soon</div>
-  <h2 class="cta-h reveal">Wear your<br><em>sharpest</em> <span class="stroke">self.</span></h2>
-  <p class="cta-sub reveal r1">We're building something that knows you better than any AI ever has. Be the first to know when Persona v<span class="rv">01</span> is ready.</p>
-  <div class="cta-notify reveal r2">
-    <div class="notify-form">
-      <input type="email" class="notify-input" placeholder="your@email.com" />
-      <button class="notify-btn" onclick="handleNotify(this)">Notify me</button>
-    </div>
-    <p class="notify-note">No spam. Just one email when we launch.</p>
+  <h2 class="cta-h reveal">Be first<br>to know<br><em>when it's</em> <span class="stroke">ready.</span></h2>
+  <p class="cta-sub reveal r1">We're still building. Drop your email and we'll reach out when Persona v<span class="rv">01</span> is ready to ship.</p>
+  <div class="tally-wrap reveal r2">
+    <iframe
+      id="tally-iframe"
+      src="https://tally.so/embed/A7d97y?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+      width="100%"
+      height="160"
+      frameborder="0"
+      scrolling="no"
+      title="personaise waitlist"
+      allowfullscreen
+    ></iframe>
   </div>
 </section>
 
@@ -1793,5 +1837,7 @@ const darkObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.5 });
 darkSections.forEach(s => darkObserver.observe(s));
 </script>
+<script async src="https://tally.so/widgets/embed.js"></script>
+<script src="https://tally.so/widgets/embed.js" async></script>
 </body>
 </html>
