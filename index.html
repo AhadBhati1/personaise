@@ -717,10 +717,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   color: rgba(255,255,255,.25);
   text-transform: uppercase;
 }
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  padding-bottom: 16px;
-  margin-bottom: 4px;
-}
+
 .gpt-logo {
   font-family: 'Cormorant Garamond', serif;
   font-size: 22px;
@@ -832,6 +829,41 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   margin-top: 6px;
   border-top: 1px solid rgba(255,255,255,.04);
   padding-top: 6px;
+}
+
+/* ── SPOKEN RESPONSE INDICATOR ── */
+.gpt-spoken {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,.22);
+  letter-spacing: .1em;
+  margin-top: 4px;
+}
+.gpt-spoken-bars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 12px;
+}
+.gpt-spoken-bars span {
+  display: inline-block;
+  width: 2px;
+  background: var(--red);
+  border-radius: 2px;
+  opacity: .6;
+  animation: spokenBar 1.2s ease-in-out infinite;
+}
+.gpt-spoken-bars span:nth-child(1) { height: 4px; animation-delay: 0s; }
+.gpt-spoken-bars span:nth-child(2) { height: 8px; animation-delay: .15s; }
+.gpt-spoken-bars span:nth-child(3) { height: 12px; animation-delay: .3s; }
+.gpt-spoken-bars span:nth-child(4) { height: 8px; animation-delay: .45s; }
+.gpt-spoken-bars span:nth-child(5) { height: 4px; animation-delay: .6s; }
+@keyframes spokenBar {
+  0%, 100% { transform: scaleY(0.4); opacity: .3; }
+  50% { transform: scaleY(1); opacity: .8; }
 }
 
 .rv { color: var(--red); font-style: normal; }
@@ -1451,10 +1483,9 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     </h1>
 
     <div class="hero-sub-row">
+      <!-- CHANGED: updated hero sub to mention speaks back -->
       <p class="hero-sub">
-        A small wearable that listens to your day.
-        <strong>personaise learns how you communicate</strong> — and uses it to write, reply, and follow up exactly as you would.
-        Your voice. Your tone. Your relationships.
+        A small wearable that listens to your day — and <strong>speaks back.</strong> personaise learns how you communicate and uses it to write, reply, and follow up exactly as you would. <strong>Talk to it. It responds.</strong> Your voice. Your tone. Your relationships.
       </p>
       <div class="hero-right-col">
         <div class="hero-ctas">
@@ -1480,7 +1511,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
       <span class="cs-label">Launching Soon</span>
     </div>
     <div class="cs-center">
-      <span class="cs-headline">Persona v<span class="rv">01</span> &mdash; Limited First Run</span>
+      <!-- CHANGED: highlights two-way nature -->
+      <span class="cs-headline">Persona v<span class="rv">01</span> &mdash; Listens. Thinks. <em>Speaks back.</em></span>
     </div>
     <div class="cs-right">
       <span class="cs-cta-static">Waitlist Opening Soon</span>
@@ -1493,15 +1525,17 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="split-left reveal">
     <div class="split-left-noise" id="splitNoise"></div>
     <div><div class="split-label">The Device</div></div>
-    <h2 class="split-headline">Other wearables<br>capture moments.<br>Persona v<span class="rv">01</span> <em>learns you.</em></h2>
-    <p class="split-footnote">Most devices ask you to remember for them. Persona v<span class="rv">01</span> remembers for you — building a picture of how you communicate that gets sharper every day.</p>
+    <!-- CHANGED: updated headline to include two-way -->
+    <h2 class="split-headline">Other wearables<br>capture moments.<br>Persona v<span class="rv">01</span> <em>converses.</em></h2>
+    <p class="split-footnote">Most devices ask you to remember for them. Persona v<span class="rv">01</span> remembers for you — and talks back — building a picture of how you communicate that gets sharper every day.</p>
     <div class="split-left-num">01</div>
   </div>
   <div class="split-right reveal r2">
     <div class="split-right-noise" id="splitRightNoise"></div>
     <p class="body-text">Recording a meeting is table stakes. <strong>What's rare is a device that understands the person in the meeting.</strong> Persona v<span class="rv">01</span> doesn't just transcribe — it learns your phrasing, your relationships, your professional style, and feeds that understanding into everything it does for you.</p>
-    <div class="pull-quote">"Clip it on. Say the word. It drafts, schedules, follows up — sounding exactly like you wrote every word yourself."</div>
-    <p class="body-text">Every conversation makes it sharper. Every instruction it carries out makes it more you. <strong>A wearable that doesn't just live on your body — it lives inside how you work.</strong></p>
+    <div class="pull-quote">"Clip it on. Say the word. It drafts, reads the reply aloud, confirms — and sends, sounding exactly like you wrote every word yourself."</div>
+    <!-- CHANGED: added two-way note -->
+    <p class="body-text">Every conversation makes it sharper. <strong>It's not just a listener — it talks back.</strong> Ask it anything. It responds in a natural voice that already knows your context, your people, and how you like to work. A wearable that doesn't just live on your body — it lives inside how you think.</p>
   </div>
 </section>
 
@@ -1530,7 +1564,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="demo-header reveal">
     <div>
       <div class="demo-h-label">How It Works</div>
-      <h2 class="demo-h-title">Three steps.<br><em>One version of you</em><br>that never sleeps.</h2>
+      <!-- CHANGED: updated to reflect two-way -->
+      <h2 class="demo-h-title">Three steps.<br><em>One version of you</em><br>that listens, thinks, speaks.</h2>
     </div>
     <div class="demo-h-right">Persona v<span class="rv">01</span> · Hardware<br>personaise · Software<br>PersonaMind · Your AI</div>
   </div>
@@ -1560,8 +1595,9 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
       <div class="step-icon">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--red)" stroke-width="1.2"><polyline points="4,16 9,9 14,13 20,5 26,9"/><circle cx="26" cy="9" r="2" fill="var(--red)" stroke="none"/><line x1="4" y1="22" x2="24" y2="22" stroke-opacity=".3"/></svg>
       </div>
-      <div class="step-title">It acts as you</div>
-      <div class="step-desc">Draft emails, summarise meetings, schedule calls, or just ask it anything — every response sounds exactly like you, powered by your own data.</div>
+      <!-- CHANGED: step 03 now reflects voice response -->
+      <div class="step-title">It responds — in voice</div>
+      <div class="step-desc">Ask anything. It speaks back in a natural voice that knows your context, reads drafts aloud, and confirms before sending. No screen needed.</div>
     </div>
   </div>
 
@@ -1587,14 +1623,15 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
         <div class="m-step-desc">personaise learns your tone, relationships, and context — building a model of you that gets sharper every day.</div>
       </div>
     </div>
+    <!-- CHANGED: mobile step 03 -->
     <div class="m-step">
       <div class="m-step-num">03</div>
       <div class="m-step-body">
         <div class="m-step-icon">
           <svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="var(--red)" stroke-width="1.4"><polyline points="4,16 9,9 14,13 20,5 26,9"/><circle cx="26" cy="9" r="2" fill="var(--red)" stroke="none"/><line x1="4" y1="22" x2="24" y2="22" stroke-opacity=".3"/></svg>
         </div>
-        <div class="m-step-title">It <em>acts</em> as you</div>
-        <div class="m-step-desc">Drafts emails, summarises meetings, schedules calls — every output sounds exactly like you wrote it yourself.</div>
+        <div class="m-step-title">It <em>speaks back</em></div>
+        <div class="m-step-desc">Asks anything, reads drafts aloud, confirms before sending — in a voice that knows your context. No screen, no app.</div>
       </div>
     </div>
   </div>
@@ -1603,29 +1640,30 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="m-usecases">
     <div class="m-usecases-label">What it does</div>
     <div class="m-uc-scroll">
+      <!-- CHANGED: PersonaMind card updated to reflect two-way -->
       <div class="m-uc-card">
         <div class="m-uc-card-emoji">💬</div>
         <div class="m-uc-card-title">PersonaMind</div>
-        <div class="m-uc-card-desc">"What did Rohan say about Q4?" — it knows, because it was there. Ask it anything about your day, your meetings, your decisions.</div>
-        <div class="m-uc-card-tag">Your private AI · not ChatGPT</div>
+        <div class="m-uc-card-desc">"What did Rohan say about Q4?" — it knows, because it was there. Asks you back, explains its reasoning, and speaks the answer out loud.</div>
+        <div class="m-uc-card-tag">Two-way · your private AI</div>
       </div>
       <div class="m-uc-card">
         <div class="m-uc-card-emoji">✉️</div>
         <div class="m-uc-card-title">Email Drafts</div>
-        <div class="m-uc-card-desc">Say what you need. Get a draft back in your exact tone — word choice, warmth level, and sign-off all calibrated to who you're writing to.</div>
-        <div class="m-uc-card-tag">In your voice · every time</div>
+        <div class="m-uc-card-desc">Say what you need. It drafts in your exact tone, reads it back to you aloud, and sends on your word.</div>
+        <div class="m-uc-card-tag">Reads back · in your voice</div>
       </div>
       <div class="m-uc-card">
         <div class="m-uc-card-emoji">📋</div>
         <div class="m-uc-card-title">Meeting Recap</div>
-        <div class="m-uc-card-desc">Not a transcript. The actual decisions, action items, and things you said you'd follow up on — organised the way you think.</div>
-        <div class="m-uc-card-tag">What actually matters</div>
+        <div class="m-uc-card-desc">Not a transcript. The actual decisions, action items, and things you said you'd follow up on — read back to you the moment the call ends.</div>
+        <div class="m-uc-card-tag">Spoken summary · instant</div>
       </div>
       <div class="m-uc-card">
         <div class="m-uc-card-emoji">📅</div>
         <div class="m-uc-card-title">Scheduling</div>
-        <div class="m-uc-card-desc">Hear yourself say "let's find time next week" — it books it. Around your calendar, your preferences, your energy levels.</div>
-        <div class="m-uc-card-tag">No app switching</div>
+        <div class="m-uc-card-desc">Hear yourself say "let's find time next week" — it tells you what it found, confirms with you, and books it.</div>
+        <div class="m-uc-card-tag">Voice confirmation · no app</div>
       </div>
     </div>
     <div class="m-uc-hint">← swipe to explore →</div>
@@ -1715,7 +1753,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
         <div class="uc-panel active" id="tab-chat">
           <div class="uc-panel-title">
             <span class="uc-panel-name">PersonaMind</span>
-            <span class="uc-panel-tag">Your private AI — knows you, not just the internet</span>
+            <!-- CHANGED: updated tag to reflect two-way -->
+            <span class="uc-panel-tag">Your private AI — asks, answers, and speaks back</span>
           </div>
           <div class="uc-gpt-chat">
             <div class="gpt-q">"What did Rohan say about the Q4 roadmap?"</div>
@@ -1723,16 +1762,25 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
               <span class="gpt-a-label">PersonaMind</span>
               Rohan flagged timeline risk on the analytics module in your Oct 14 sync. He suggested deprioritising it for Q4 and revisiting in January.
               <div class="gpt-source">📼 Your recording · Oct 14, 11:32am</div>
+              <!-- CHANGED: added spoken response indicator -->
+              <div class="gpt-spoken">
+                <div class="gpt-spoken-bars"><span></span><span></span><span></span><span></span><span></span></div>
+                Speaking this answer aloud
+              </div>
             </div>
-            <div class="gpt-q">"How do I usually handle difficult conversations?"</div>
+            <div class="gpt-q">"Draft a follow-up to Rohan and read it back to me."</div>
             <div class="gpt-a">
               <span class="gpt-a-label">PersonaMind</span>
-              You lead with shared context first, then the problem — almost never a direct ask upfront. You often open with <em>"I wanted to flag something early."</em>
-              <div class="gpt-source">🧠 Learned from 38 of your conversations</div>
+              Done — drafted in your formal tone for Rohan. Reading it back now. Say <em>"send"</em> to confirm.
+              <div class="gpt-source">🧠 Tone calibrated from 38 conversations with Rohan</div>
+              <div class="gpt-spoken">
+                <div class="gpt-spoken-bars"><span></span><span></span><span></span><span></span><span></span></div>
+                Reading draft aloud · awaiting your word
+              </div>
             </div>
           </div>
           <div class="uc-footer">
-            <div class="uc-badges"><span class="badge-pill">On-device · private</span><span class="badge-pill">Your data only</span></div>
+            <div class="uc-badges"><span class="badge-pill">On-device · private</span><span class="badge-pill">Voice in · voice out</span></div>
             <div class="uc-save">Not ChatGPT. This is you.</div>
           </div>
         </div>
@@ -1741,7 +1789,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
         <div class="uc-panel" id="tab-email">
           <div class="uc-panel-title">
             <span class="uc-panel-name">Email Drafts</span>
-            <span class="uc-panel-tag">Just say what you need — it writes in your voice</span>
+            <!-- CHANGED: updated tag -->
+            <span class="uc-panel-tag">Say it, hear it back, send it on your word</span>
           </div>
           <div class="uc-voice-input">
             <span class="prompt-dot"></span>
@@ -1757,8 +1806,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
             <div class="uc-body">Hey Rohan,<br><br>This week's client sessions ran much longer than expected. I'd like to take Friday as a personal day — I'll make sure everything is covered before then.<br><br>Thanks<span class="t-caret"></span></div>
           </div>
           <div class="uc-footer">
-            <div class="uc-badges"><span class="badge-pill">Your tone</span><span class="badge-pill">Relationship-aware</span></div>
-            <div class="uc-save">Saved to drafts · waiting for you to send</div>
+            <div class="uc-badges"><span class="badge-pill">Your tone</span><span class="badge-pill">Read back · awaiting "send"</span></div>
+            <div class="uc-save">Reading draft aloud now</div>
           </div>
         </div>
 
@@ -1766,7 +1815,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
         <div class="uc-panel" id="tab-meeting">
           <div class="uc-panel-title">
             <span class="uc-panel-name">Meeting Recap</span>
-            <span class="uc-panel-tag">Decisions, your actions, nothing else</span>
+            <span class="uc-panel-tag">Decisions, your actions, spoken back instantly</span>
           </div>
           <div class="uc-voice-input">
             <span class="prompt-dot"></span>
@@ -1786,8 +1835,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
             </div>
           </div>
           <div class="uc-footer">
-            <div class="uc-badges"><span class="badge-pill">In your language</span><span class="badge-pill">No fluff</span></div>
-            <div class="uc-save">Follow-ups queued automatically</div>
+            <div class="uc-badges"><span class="badge-pill">In your language</span><span class="badge-pill">Spoken summary</span></div>
+            <div class="uc-save">Read back complete · follow-ups queued</div>
           </div>
         </div>
 
@@ -1795,7 +1844,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
         <div class="uc-panel" id="tab-schedule">
           <div class="uc-panel-title">
             <span class="uc-panel-name">Scheduling</span>
-            <span class="uc-panel-tag">Say it out loud — it handles the rest</span>
+            <span class="uc-panel-tag">Say it out loud — it confirms back, then books</span>
           </div>
           <div class="uc-voice-input">
             <span class="prompt-dot"></span>
@@ -1815,8 +1864,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
             </div>
           </div>
           <div class="uc-footer">
-            <div class="uc-badges"><span class="badge-pill">Preference-aware</span><span class="badge-pill">Zero app-switching</span></div>
-            <div class="uc-save">Invite sent · no input needed</div>
+            <div class="uc-badges"><span class="badge-pill">Voice confirmed</span><span class="badge-pill">Zero app-switching</span></div>
+            <div class="uc-save">Spoken back · invite sent on your word</div>
           </div>
         </div>
 
@@ -1838,14 +1887,17 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 <!-- TICKER -->
 <div class="ticker-divider">
   <div class="ticker-divider-noise" id="tickerNoise"></div>
+  <!-- CHANGED: added Voice Synthesis to ticker -->
   <div class="ticker-track">
     <span class="ticker-item"><span class="dot">●</span>Persona Engine</span>
+    <span class="ticker-item"><span class="dot">●</span>Voice Synthesis</span>
     <span class="ticker-item"><span class="dot">●</span>Smart Drafts</span>
     <span class="ticker-item"><span class="dot">●</span>Calendar Intelligence</span>
     <span class="ticker-item"><span class="dot">●</span>Meeting Memory</span>
     <span class="ticker-item"><span class="dot">●</span>Relationship Graph</span>
     <span class="ticker-item"><span class="dot">●</span>Task Autopilot</span>
     <span class="ticker-item"><span class="dot">●</span>Persona Engine</span>
+    <span class="ticker-item"><span class="dot">●</span>Voice Synthesis</span>
     <span class="ticker-item"><span class="dot">●</span>Smart Drafts</span>
     <span class="ticker-item"><span class="dot">●</span>Calendar Intelligence</span>
     <span class="ticker-item"><span class="dot">●</span>Meeting Memory</span>
@@ -1861,7 +1913,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="features-top">
     <h2 class="features-h reveal">Six things<br>Persona v<span class="rv">01</span><br><em>does for you.</em></h2>
     <div class="reveal r2">
-      <p class="features-desc">It starts by listening. Then it starts understanding. Then it starts sounding exactly like you wrote every word yourself.</p>
+      <!-- CHANGED: updated features description -->
+      <p class="features-desc">It starts by listening. Then it starts understanding. Then it speaks back — and sounds exactly like you wrote every word yourself.</p>
       <div class="feat-ghost-num">06</div>
     </div>
   </div>
@@ -1872,23 +1925,24 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
       <div class="feat-title">Persona Engine</div>
       <p class="feat-desc">Builds a living model of your tone, vocabulary, and communication style from every conversation it hears.</p>
     </div>
+    <!-- CHANGED: Feature 02 updated to Voice In, Voice Out -->
     <div class="feat-card reveal r1">
       <div class="feat-n">02</div>
       <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><rect x="4" y="8" width="24" height="16"/><line x1="9" y1="13" x2="9" y2="19"/><line x1="14" y1="11" x2="14" y2="21"/><line x1="19" y1="14" x2="19" y2="18"/><line x1="24" y1="12" x2="24" y2="20"/></svg>
-      <div class="feat-title">Voice-to-Draft</div>
-      <p class="feat-desc">Say what you need aloud — personaise drafts the email, message, or doc in your exact tone. Saved until you approve.</p>
+      <div class="feat-title">Voice In, Voice Out</div>
+      <p class="feat-desc">Say what you need — it drafts, reads the response back in your synthesised voice, and acts on your word. No screen, no typing, ever.</p>
     </div>
     <div class="feat-card reveal r2">
       <div class="feat-n">03</div>
       <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><rect x="4" y="4" width="24" height="24" rx="1"/><line x1="4" y1="11" x2="28" y2="11"/><line x1="11" y1="4" x2="11" y2="11"/><line x1="21" y1="4" x2="21" y2="11"/><rect x="8" y="16" width="5" height="4"/><rect x="18" y="16" width="5" height="4"/></svg>
       <div class="feat-title">Calendar Intelligence</div>
-      <p class="feat-desc">Hears you mention a meeting, finds the slot, books it around your preferences — no app-switching needed.</p>
+      <p class="feat-desc">Hears you mention a meeting, finds the slot, tells you what it found, and books it on your confirmation — no app-switching needed.</p>
     </div>
     <div class="feat-card reveal r3">
       <div class="feat-n">04</div>
       <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><ellipse cx="16" cy="16" rx="12" ry="8"/><circle cx="16" cy="16" r="3"/><line x1="4" y1="16" x2="13" y2="16"/><line x1="19" y1="16" x2="28" y2="16"/></svg>
       <div class="feat-title">Meeting Memory</div>
-      <p class="feat-desc">Listens to your calls. Delivers summaries in your language — action items, decisions, follow-ups. No boilerplate.</p>
+      <p class="feat-desc">Listens to your calls. Reads the summary back to you the moment it ends — decisions, actions, follow-ups. In your language, spoken aloud.</p>
     </div>
     <div class="feat-card reveal r4">
       <div class="feat-n">05</div>
@@ -1915,14 +1969,15 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
       </div>
       <div class="m-feat-body"><div class="m-feat-body-inner">Builds a living model of your tone, vocabulary, and communication style from every conversation it hears.</div></div>
     </div>
+    <!-- CHANGED: mobile feat 02 updated -->
     <div class="m-feat-item">
       <div class="m-feat-header" onclick="toggleFeat(this)">
         <span class="m-feat-n">02</span>
         <svg class="m-feat-icon-svg" width="22" height="22" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.2"><rect x="4" y="8" width="24" height="16"/><line x1="9" y1="13" x2="9" y2="19"/><line x1="14" y1="11" x2="14" y2="21"/><line x1="19" y1="14" x2="19" y2="18"/><line x1="24" y1="12" x2="24" y2="20"/></svg>
-        <span class="m-feat-name">Voice-to-Draft</span>
+        <span class="m-feat-name">Voice In, Voice Out</span>
         <span class="m-feat-chevron"></span>
       </div>
-      <div class="m-feat-body"><div class="m-feat-body-inner">Say what you need aloud — personaise drafts the email, message, or doc in your exact tone. Saved until you approve.</div></div>
+      <div class="m-feat-body"><div class="m-feat-body-inner">Say what you need — it drafts, reads the response back in your synthesised voice, and acts on your word. No screen needed.</div></div>
     </div>
     <div class="m-feat-item">
       <div class="m-feat-header" onclick="toggleFeat(this)">
@@ -1931,7 +1986,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
         <span class="m-feat-name">Calendar Intelligence</span>
         <span class="m-feat-chevron"></span>
       </div>
-      <div class="m-feat-body"><div class="m-feat-body-inner">Hears you mention a meeting, finds the slot, books it around your preferences — no app-switching needed.</div></div>
+      <div class="m-feat-body"><div class="m-feat-body-inner">Hears you mention a meeting, finds the slot, tells you what it found, and books it on your voice confirmation.</div></div>
     </div>
     <div class="m-feat-item">
       <div class="m-feat-header" onclick="toggleFeat(this)">
@@ -1940,7 +1995,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
         <span class="m-feat-name">Meeting Memory</span>
         <span class="m-feat-chevron"></span>
       </div>
-      <div class="m-feat-body"><div class="m-feat-body-inner">Listens to your calls. Delivers summaries in your language — action items, decisions, follow-ups. No boilerplate.</div></div>
+      <div class="m-feat-body"><div class="m-feat-body-inner">Listens to your calls. Reads the summary back to you the moment it ends — decisions, actions, follow-ups. Spoken aloud.</div></div>
     </div>
     <div class="m-feat-item">
       <div class="m-feat-header" onclick="toggleFeat(this)">
@@ -1963,22 +2018,26 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   </div>
 
 </section>
+
+<!-- PHILOSOPHY / MANIFESTO -->
 <section class="philosophy" id="manifesto">
   <div class="philosophy-noise" id="philNoise"></div>
   <div class="phil-bg-word">you.</div>
   <div class="phil-inner">
     <div class="phil-label reveal">The Manifesto</div>
+    <!-- CHANGED: added "Speaks back." line -->
     <h2 class="phil-q reveal r1">
       A small wearable<br>
       that listens — <em>when</em><br>
       <span class="dim">you want it to.</span><br>
+      Speaks back.<br>
       Your voice.<br>
-      Your tone.<br>
       <em>Your relationships.</em>
     </h2>
     <div class="phil-row reveal r2">
       <div class="phil-line"></div>
-      <p class="phil-cite">personaise learns how you communicate — and uses it to write, reply, and follow up exactly as you would.</p>
+      <!-- CHANGED: updated manifesto cite -->
+      <p class="phil-cite">personaise learns how you communicate — and uses it to write, reply, read back, and follow up exactly as you would. No screen. Just conversation.</p>
     </div>
   </div>
 </section>
@@ -1987,7 +2046,8 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 <section class="cta" id="waitlist">
   <div class="cta-noise" id="ctaNoise"></div>
   <div class="cta-glow"></div>
-  <div class="cta-eyebrow">Persona v<span class="rv">01</span> — Coming Soon</div>
+  <!-- CHANGED: updated eyebrow to reflect two-way -->
+  <div class="cta-eyebrow">Persona v<span class="rv">01</span> — Listens &amp; Speaks Back</div>
   <h2 class="cta-h reveal">Be first<br>to know<br><em>when it's</em> <span class="stroke">ready.</span></h2>
   <p class="cta-sub reveal r1">We're still building. Drop your email and we'll reach out when Persona v<span class="rv">01</span> is ready to ship.</p>
   <div class="tally-wrap reveal r2">
