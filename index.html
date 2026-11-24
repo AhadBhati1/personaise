@@ -1343,6 +1343,45 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   .hero { padding: 130px 20px 60px; }
   .hero-video { width: min(260px, 70vw); }
 }
+
+/* ═══ HERO VIDEO v2 (click-to-play) ═══ */
+.hero-video { width: min(280px, 22vw, 28vh); }
+@media (min-width: 1025px) {
+  .hero-inner { padding-right: calc(min(280px, 22vw, 28vh) + 68px + 48px); }
+}
+.hv-frame {
+  display: block; padding: 0; font: inherit; color: inherit; cursor: pointer;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(232,25,14,.22), transparent 60%),
+    var(--poster, none) center/cover no-repeat,
+    #0C0B0A;
+}
+.hv-wave { position: absolute; left: 50%; top: 40%; transform: translate(-50%,-50%); display: flex; align-items: center; gap: 5px; height: 90px; }
+.hv-wave i { display: block; width: 4px; height: 20px; background: var(--red); opacity: .6; animation: hvBar 1.4s ease-in-out infinite; }
+.hv-wave i:nth-child(2){animation-delay:.1s} .hv-wave i:nth-child(3){animation-delay:.2s} .hv-wave i:nth-child(4){animation-delay:.3s}
+.hv-wave i:nth-child(5){animation-delay:.4s} .hv-wave i:nth-child(6){animation-delay:.5s} .hv-wave i:nth-child(7){animation-delay:.6s}
+@keyframes hvBar { 0%,100%{height:14px} 50%{height:80px} }
+.hv-brand { position: absolute; left: 0; right: 0; bottom: 22%; text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 30px; color: rgba(255,255,255,.88); letter-spacing: .01em; }
+.hv-brand b { font-weight: 400; color: var(--red); }
+.hv-play {
+  position: absolute; left: 50%; top: 40%; transform: translate(-50%,-50%);
+  width: 64px; height: 64px; border-radius: 50%; background: var(--red); color: #fff;
+  display: flex; align-items: center; justify-content: center; padding-left: 3px;
+  box-shadow: 0 0 0 8px rgba(232,25,14,.2); transition: transform .25s, box-shadow .25s;
+}
+.hv-frame:hover .hv-play { transform: translate(-50%,-50%) scale(1.1); box-shadow: 0 0 0 14px rgba(232,25,14,.18); }
+.hv-hint { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+.vmodal { position: fixed; inset: 0; z-index: 100000; display: none; align-items: center; justify-content: center; background: rgba(12,11,10,.88); backdrop-filter: blur(6px); cursor: auto; }
+.vmodal.open { display: flex; }
+.vmodal-box { position: relative; width: min(400px, 92vw); height: min(86vh, 780px); background: #000; box-shadow: 0 40px 120px rgba(0,0,0,.6), 10px 10px 0 var(--red); }
+.vmodal-stage, .vmodal-stage iframe, .vmodal-stage video { width: 100%; height: 100%; border: 0; display: block; background: #000; }
+.vmodal-stage video { object-fit: contain; }
+.vmodal-close { position: absolute; top: -44px; right: 0; background: none; border: 0; color: #fff; font-size: 34px; line-height: 1; cursor: pointer; padding: 4px 8px; }
+.vmodal-close:hover { color: var(--red); }
+@media (max-width: 1024px) {
+  .hero-video { width: 240px; }
+}
 </style>
 </head>
 <body>
@@ -1390,20 +1429,26 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="hero-noise" id="heroNoise"></div>
   <div class="hero-line-v"></div>
 
-  <!-- HERO DEMO VIDEO (vertical) -->
+  <!-- HERO DEMO VIDEO (vertical, click to play in-site) -->
   <div class="hero-video" id="heroVideo">
-    <div class="hv-frame">
-      <iframe
-        src="https://www.instagram.com/reel/DgE5QK7zZ-W/embed"
-        title="personaise demo"
-        loading="lazy"
-        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-        allowfullscreen
-        scrolling="no"></iframe>
-      <!-- Self-hosted alternative (cleaner, autoplays): replace the iframe above with
-      <video src="/demo.mp4" poster="/demo-poster.jpg" autoplay muted loop playsinline preload="metadata"></video> -->
-    </div>
+    <button class="hv-frame" id="hvOpen" type="button" aria-label="Play demo video"
+            data-reel="https://www.instagram.com/reel/DgE5QK7zZ-W/embed"
+            data-video="">
+      <!-- optional: set --hv-poster on .hv-frame via CSS, or put /demo-poster.jpg as an <img> here -->
+      <span class="hv-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="hv-brand">person<b>ai</b>se</span>
+      <span class="hv-play"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg></span>
+      <span class="hv-hint">Play demo</span>
+    </button>
     <div class="hv-caption">Demo · Persona v<span class="rv">01</span></div>
+  </div>
+
+  <!-- VIDEO MODAL -->
+  <div class="vmodal" id="vmodal" aria-hidden="true">
+    <div class="vmodal-box">
+      <button class="vmodal-close" id="vmodalClose" type="button" aria-label="Close">×</button>
+      <div class="vmodal-stage" id="vmodalStage"></div>
+    </div>
   </div>
 
   <div class="hero-inner">
@@ -2151,6 +2196,29 @@ const darkObserver = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.5 });
 darkSections.forEach(s => darkObserver.observe(s));
+
+// ── HERO VIDEO MODAL
+(function(){
+  const openBtn=document.getElementById('hvOpen'), modal=document.getElementById('vmodal'),
+        stage=document.getElementById('vmodalStage'), closeBtn=document.getElementById('vmodalClose');
+  if(!openBtn||!modal) return;
+  function open(){
+    const mp4=openBtn.dataset.video;
+    stage.innerHTML = mp4
+      ? '<video src="'+mp4+'" controls autoplay playsinline></video>'
+      : '<iframe src="'+openBtn.dataset.reel+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen scrolling="no" title="personaise demo"></iframe>';
+    modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function close(){
+    modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
+    stage.innerHTML=''; document.body.style.overflow='';
+  }
+  openBtn.addEventListener('click',open);
+  closeBtn.addEventListener('click',close);
+  modal.addEventListener('click',e=>{ if(e.target===modal) close(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+})();
 </script>
 <script async src="https://tally.so/widgets/embed.js"></script>
 </body>
