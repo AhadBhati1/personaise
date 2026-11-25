@@ -1384,6 +1384,42 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 }
 .vmodal-ig { position: absolute; left: 0; right: 0; bottom: -40px; text-align: center; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.6); text-decoration: none; }
 .vmodal-ig:hover { color: var(--red); }
+
+/* ═══ HEALTH & FITNESS ═══ */
+.body-sec { background: var(--ink); padding: 120px 68px; position: relative; overflow: hidden; }
+.body-noise { position: absolute; inset: 0; pointer-events: none; opacity: .045; background-repeat: repeat; }
+.body-top { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: end; margin-bottom: 64px; position: relative; z-index: 1; }
+.body-top .split-label { margin-bottom: 28px; }
+.body-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 5.5vw, 80px); font-weight: 300; line-height: .95; color: rgba(255,255,255,.9); letter-spacing: -.02em; }
+.body-h em { font-style: italic; color: var(--red); }
+.body-lead { font-size: 15px; line-height: 1.85; color: rgba(255,255,255,.45); font-weight: 300; max-width: 460px; }
+.body-devices { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,.06); position: relative; z-index: 1; margin-bottom: 1px; }
+.body-dev { background: #141210; padding: 44px 40px; display: flex; flex-direction: column; gap: 12px; }
+.body-dev-hl { background: #1a1512; box-shadow: inset 0 2px 0 var(--red); }
+.body-dev-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--red); }
+.body-dev-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: rgba(255,255,255,.9); line-height: 1.15; letter-spacing: -.01em; }
+.body-dev-desc { font-size: 14px; line-height: 1.85; color: rgba(255,255,255,.48); font-weight: 300; }
+.body-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,.06); position: relative; z-index: 1; }
+.bm { background: #141210; padding: 36px 30px; display: flex; flex-direction: column; gap: 12px; transition: background .3s; }
+.bm:hover { background: #1c1814; }
+.bm svg { opacity: .9; margin-bottom: 4px; }
+.bm-name { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: rgba(255,255,255,.88); letter-spacing: -.01em; }
+.bm-desc { font-size: 13px; line-height: 1.75; color: rgba(255,255,255,.45); font-weight: 300; }
+.body-note { margin-top: 28px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.22); position: relative; z-index: 1; }
+.uc-card-tabs { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 1024px) {
+  .body-sec { padding: 100px 40px; }
+  .body-top { grid-template-columns: 1fr; gap: 28px; margin-bottom: 48px; }
+  .body-metrics { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .body-sec { padding: 72px 20px; }
+  .body-devices { grid-template-columns: 1fr; }
+  .body-dev { padding: 32px 24px; }
+  .body-dev-title { font-size: 24px; }
+  .bm { padding: 28px 22px; }
+  .uc-card-tabs { grid-template-columns: repeat(2, 1fr); }
+}
 </style>
 </head>
 <body>
@@ -1397,6 +1433,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <a href="#" class="nav-logo">person<em>ai</em>se</a>
   <ul class="nav-center">
     <li><a href="#product">Product</a></li>
+    <li><a href="#health">Health</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="#manifesto">Manifesto</a></li>
   </ul>
@@ -1417,6 +1454,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 <!-- MOBILE NAV -->
 <div class="nav-mobile-menu" id="mobileMenu">
   <a href="#product" onclick="closeMobile()">Product</a>
+  <a href="#health" onclick="closeMobile()">Health</a>
   <a href="#waitlist" onclick="closeMobile()">Get Early Access</a>
   <a href="#manifesto" onclick="closeMobile()">Manifesto</a>
   <a href="#how-it-works" onclick="closeMobile()" style="color:var(--red)">How It Works →</a>
@@ -1466,7 +1504,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
 
     <div class="hero-sub-row">
       <p class="hero-sub">
-        A small wearable that listens to your day — and <strong>speaks back.</strong> personaise learns how you communicate and uses it to write, reply, and follow up exactly as you would. <strong>Talk to it. It responds.</strong> Your voice. Your tone. Your relationships.
+        Two wearables, one AI. It listens to your day, <strong>speaks back,</strong> and <strong>tracks your body</strong> — heart rate, SpO₂, activity. It learns how you communicate and writes, replies and follows up exactly as you would. Your voice. Your tone. Your health.
       </p>
       <div class="hero-right-col">
         <div class="hero-ctas">
@@ -1491,7 +1529,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
       <span class="cs-label">Launching Soon</span>
     </div>
     <div class="cs-center">
-      <span class="cs-headline">Persona v<span class="rv">01</span> &mdash; Listens. Thinks. <em>Speaks back.</em></span>
+      <span class="cs-headline">Persona v<span class="rv">01</span> &mdash; Listens. Speaks back. <em>Tracks your body.</em></span>
     </div>
     <div class="cs-right">
       <span class="cs-cta-static">Waitlist Opening Soon</span>
@@ -1512,7 +1550,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     <div class="split-right-noise" id="splitRightNoise"></div>
     <p class="body-text">Recording a meeting is table stakes. <strong>What's rare is a device that understands the person in the meeting.</strong> Persona v<span class="rv">01</span> doesn't just transcribe — it learns your phrasing, your relationships, your professional style, and feeds that understanding into everything it does for you.</p>
     <div class="pull-quote">"Clip it on. Say the word. It drafts, reads the reply aloud, confirms — and sends, sounding exactly like you wrote every word yourself."</div>
-    <p class="body-text">Every conversation makes it sharper. <strong>It's not just a listener — it talks back.</strong> Ask it anything. It responds in a natural voice that already knows your context, your people, and how you like to work. A wearable that doesn't just live on your body — it lives inside how you think.</p>
+    <p class="body-text">Every conversation makes it sharper. <strong>It's not just a listener — it talks back.</strong> Ask it anything. It responds in a natural voice that already knows your context, your people, and how you like to work. A wearable that doesn't just live on your body — it reads it, and lives inside how you think.</p>
   </div>
 </section>
 
@@ -1532,6 +1570,56 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     <div class="stat-label"><strong>Gets sharper forever</strong> — every conversation makes your persona more you</div>
   </div>
 </div>
+
+<!-- HEALTH & FITNESS -->
+<section class="body-sec" id="health">
+  <div class="body-noise" id="bodyNoise"></div>
+  <div class="body-top reveal">
+    <div>
+      <div class="split-label">Health &amp; Fitness</div>
+      <h2 class="body-h">Knows your day.<br><em>Reads your body.</em></h2>
+    </div>
+    <p class="body-lead">Two wearables, one AI. The wrist band adds optical heart rate, SpO₂ and a motion sensor on top of everything the pendant does — and you can simply ask it how you're doing.</p>
+  </div>
+
+  <div class="body-devices">
+    <div class="body-dev reveal">
+      <div class="body-dev-tag">Neck · Pendant</div>
+      <div class="body-dev-title">Voice-first companion</div>
+      <p class="body-dev-desc">A voice-first companion on a chain. Double tap, speak, and its built-in speaker answers.</p>
+    </div>
+    <div class="body-dev reveal r1 body-dev-hl">
+      <div class="body-dev-tag">Wrist · Band</div>
+      <div class="body-dev-title">Everything the pendant does, plus your body</div>
+      <p class="body-dev-desc">Optical heart rate and SpO₂, and an IMU for steps and activity — with an AI you can talk to about all of it.</p>
+    </div>
+  </div>
+
+  <div class="body-metrics">
+    <div class="bm reveal">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="var(--red)" stroke-width="1.3"><polyline points="2,17 9,17 12,8 17,25 21,13 24,17 30,17"/></svg>
+      <div class="bm-name">Heart rate</div>
+      <div class="bm-desc">Optical sensing right on your wrist.</div>
+    </div>
+    <div class="bm reveal r1">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="var(--red)" stroke-width="1.3"><path d="M16 3C16 3 7 14 7 20a9 9 0 0018 0C25 14 16 3 16 3z"/></svg>
+      <div class="bm-name">SpO₂</div>
+      <div class="bm-desc">Blood-oxygen readings from the optical sensor.</div>
+    </div>
+    <div class="bm reveal r2">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="var(--red)" stroke-width="1.3"><polyline points="3,28 11,28 11,19 19,19 19,10 29,10"/></svg>
+      <div class="bm-name">Steps</div>
+      <div class="bm-desc">Counted by the on-board motion sensor.</div>
+    </div>
+    <div class="bm reveal r3">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="var(--red)" stroke-width="1.3"><path d="M18 2L6 18h9l-2 12 13-17h-9z"/></svg>
+      <div class="bm-name">Activity</div>
+      <div class="bm-desc">Movement and activity levels through your day.</div>
+    </div>
+  </div>
+
+  <p class="body-note">Wellness tracking, not a medical device. Sensor readings are being validated on working prototypes.</p>
+</section>
 
 <!-- HOW IT WORKS -->
 <section class="demo-section" id="how-it-works">
@@ -1553,7 +1641,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--red)" stroke-width="1.2"><circle cx="14" cy="14" r="8"/><circle cx="14" cy="14" r="3" fill="var(--red)" stroke="none"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="14" y1="22" x2="14" y2="26"/><line x1="2" y1="14" x2="6" y2="14"/><line x1="22" y1="14" x2="26" y2="14"/></svg>
       </div>
       <div class="step-title">Persona v<span class="rv">01</span> listens</div>
-      <div class="step-desc">Clip it on. It quietly captures your conversations, meetings, and voice commands throughout your day — privately, on your phone.</div>
+      <div class="step-desc">Clip it on. It quietly captures your conversations, meetings, and voice commands throughout your day — privately, on your phone. The wrist band also reads heart rate, SpO₂ and activity.</div>
     </div>
     <div class="step-arrow">→</div>
     <div class="step-item">
@@ -1584,7 +1672,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
           <svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="var(--red)" stroke-width="1.4"><circle cx="14" cy="14" r="8"/><circle cx="14" cy="14" r="3" fill="var(--red)" stroke="none"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="14" y1="22" x2="14" y2="26"/><line x1="2" y1="14" x2="6" y2="14"/><line x1="22" y1="14" x2="26" y2="14"/></svg>
         </div>
         <div class="m-step-title">Persona v<span class="rv">01</span> <em>listens</em></div>
-        <div class="m-step-desc">Clip it on. It quietly captures your conversations and voice commands throughout your day — privately, on your phone.</div>
+        <div class="m-step-desc">Clip it on. It quietly captures your conversations and voice commands throughout your day — privately, on your phone. The wrist band also reads your heart rate, SpO₂ and activity.</div>
       </div>
     </div>
     <div class="m-step">
@@ -1636,6 +1724,12 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
         <div class="m-uc-card-title">Scheduling</div>
         <div class="m-uc-card-desc">Hear yourself say "let's find time next week" — it tells you what it found, confirms with you, and books it.</div>
         <div class="m-uc-card-tag">Voice confirmation · no app</div>
+      </div>
+      <div class="m-uc-card">
+        <div class="m-uc-card-emoji">❤️</div>
+        <div class="m-uc-card-title">Health &amp; Fitness</div>
+        <div class="m-uc-card-desc">Wrist band reads heart rate, SpO₂, steps and activity. Ask how you're doing — it answers out loud.</div>
+        <div class="m-uc-card-tag">Wrist band · ask by voice</div>
       </div>
     </div>
     <div class="m-uc-hint">← swipe to explore →</div>
@@ -1714,6 +1808,11 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
             <div class="ucc-icon">📅</div>
             <div class="ucc-label">Scheduling</div>
             <div class="ucc-desc">No app needed</div>
+          </button>
+          <button class="uc-card" onclick="switchTab(this,'health')">
+            <div class="ucc-icon">❤️</div>
+            <div class="ucc-label">Health</div>
+            <div class="ucc-desc">Ask about your body</div>
           </button>
         </div>
 
@@ -1834,6 +1933,35 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
           </div>
         </div>
 
+        <!-- HEALTH -->
+        <div class="uc-panel" id="tab-health">
+          <div class="uc-panel-title">
+            <span class="uc-panel-name">Health &amp; Fitness</span>
+            <span class="uc-panel-tag">Wrist band — ask how you're doing, hear it back</span>
+          </div>
+          <div class="uc-voice-input">
+            <span class="prompt-dot"></span>
+            <span class="uc-voice-text">"How's my heart rate looking today?"</span>
+          </div>
+          <div class="uc-thinking">
+            <span>Reading wrist sensors · heart rate, SpO₂, motion</span>
+            <span class="t-dots"><span></span><span></span><span></span></span>
+          </div>
+          <div class="uc-output-card">
+            <div class="uc-summary-title">Today · Sample readings</div>
+            <div class="uc-divider"></div>
+            <div class="uc-body">
+              <div class="sum-row"><span class="sum-label">Heart rate</span><span>72 bpm now · steady through your afternoon calls</span></div>
+              <div class="sum-row"><span class="sum-label">SpO₂</span><span>98%</span></div>
+              <div class="sum-row"><span class="sum-label">Steps</span><span>6,420 so far · a walk after lunch would close the gap</span></div>
+            </div>
+          </div>
+          <div class="uc-footer">
+            <div class="uc-badges"><span class="badge-pill">Wrist band</span><span class="badge-pill">Spoken answer</span></div>
+            <div class="uc-save">Illustrative values</div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1854,6 +1982,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
   <div class="ticker-track">
     <span class="ticker-item"><span class="dot">●</span>Persona Engine</span>
     <span class="ticker-item"><span class="dot">●</span>Voice Synthesis</span>
+    <span class="ticker-item"><span class="dot">●</span>Health Sensing</span>
     <span class="ticker-item"><span class="dot">●</span>Smart Drafts</span>
     <span class="ticker-item"><span class="dot">●</span>Calendar Intelligence</span>
     <span class="ticker-item"><span class="dot">●</span>Meeting Memory</span>
@@ -1861,6 +1990,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     <span class="ticker-item"><span class="dot">●</span>Task Autopilot</span>
     <span class="ticker-item"><span class="dot">●</span>Persona Engine</span>
     <span class="ticker-item"><span class="dot">●</span>Voice Synthesis</span>
+    <span class="ticker-item"><span class="dot">●</span>Health Sensing</span>
     <span class="ticker-item"><span class="dot">●</span>Smart Drafts</span>
     <span class="ticker-item"><span class="dot">●</span>Calendar Intelligence</span>
     <span class="ticker-item"><span class="dot">●</span>Meeting Memory</span>
@@ -1913,9 +2043,9 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     </div>
     <div class="feat-card reveal r5">
       <div class="feat-n">06</div>
-      <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><polyline points="4,20 10,12 16,17 22,8 28,14"/><circle cx="28" cy="14" r="2" fill="rgba(232,25,14,.8)" stroke="none"/></svg>
-      <div class="feat-title">Always-On Autopilot</div>
-      <p class="feat-desc">Follow-ups, reminders, acknowledgements — handled quietly from what it hears, always in your voice.</p>
+      <svg class="feat-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"><polyline points="3,17 9,17 12,9 17,25 21,13 24,17 29,17"/><circle cx="29" cy="17" r="2" fill="rgba(232,25,14,.8)" stroke="none"/></svg>
+      <div class="feat-title">Health &amp; Fitness</div>
+      <p class="feat-desc">The wrist band reads heart rate, SpO₂, steps and activity — and you can simply ask it how you're doing.</p>
     </div>
   </div>
 
@@ -1969,11 +2099,11 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     <div class="m-feat-item">
       <div class="m-feat-header" onclick="toggleFeat(this)">
         <span class="m-feat-n">06</span>
-        <svg class="m-feat-icon-svg" width="22" height="22" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.2"><polyline points="4,20 10,12 16,17 22,8 28,14"/><circle cx="28" cy="14" r="2" fill="rgba(232,25,14,.8)" stroke="none"/></svg>
-        <span class="m-feat-name">Always-On Autopilot</span>
+        <svg class="m-feat-icon-svg" width="22" height="22" viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.2"><polyline points="3,17 9,17 12,9 17,25 21,13 24,17 29,17"/><circle cx="29" cy="17" r="2" fill="rgba(232,25,14,.8)" stroke="none"/></svg>
+        <span class="m-feat-name">Health &amp; Fitness</span>
         <span class="m-feat-chevron"></span>
       </div>
-      <div class="m-feat-body"><div class="m-feat-body-inner">Follow-ups, reminders, acknowledgements — handled quietly from what it hears, always in your voice.</div></div>
+      <div class="m-feat-body"><div class="m-feat-body-inner">The wrist band reads heart rate, SpO₂, steps and activity — and you can simply ask it how you're doing.</div></div>
     </div>
   </div>
 
@@ -1995,7 +2125,7 @@ footer { background: #0A0908; padding: 44px 68px; border-top: 1px solid rgba(255
     </h2>
     <div class="phil-row reveal r2">
       <div class="phil-line"></div>
-      <p class="phil-cite">personaise learns how you communicate — and uses it to write, reply, read back, and follow up exactly as you would. No screen. Just conversation.</p>
+      <p class="phil-cite">personaise learns how you communicate — and uses it to write, reply, read back, and follow up exactly as you would. No screen. Just conversation — and a quiet read on your body.</p>
     </div>
   </div>
 </section>
@@ -2056,7 +2186,7 @@ function makeNoise(el, size) {
 }
 
 makeNoise(document.getElementById('noise-overlay'), 256);
-['heroNoise','splitNoise','splitRightNoise','demoNoise','termNoise','tickerNoise','featNoise','philNoise','ctaNoise','footerNoise'].forEach(id => makeNoise(document.getElementById(id), 200));
+['heroNoise','splitNoise','splitRightNoise','demoNoise','termNoise','tickerNoise','featNoise','philNoise','ctaNoise','footerNoise','bodyNoise'].forEach(id => makeNoise(document.getElementById(id), 200));
 
 // ── CURSOR
 const cursor = document.getElementById('cursor');
